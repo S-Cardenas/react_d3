@@ -5,6 +5,7 @@ var d3 = require('d3');
 // import rectangles from './rectangles';
 // import Rectangles from './rectangles';
 import XYAxis from './x_y_axis';
+import Groups from './group';
 
 // Returns a function that "scales" X coordinates from the data to fit the chart
 
@@ -20,9 +21,11 @@ const x0Scale = (props) => {
 };
 
 const x1Scale = (props) => {
+  var seriesNames = props.data.seriesNames,
+      series = seriesNames.slice(1, seriesNames.length);
   return(
     d3.scaleBand()
-      .domain(props.data.seriesNames)
+      .domain(series)
       .rangeRound([0,x0Scale(props).bandwidth()])
   );
 };
@@ -34,6 +37,7 @@ const yScale = (props) => {
     yValues = yValues.concat(props.data.data[i]);
   }
   var maxY = Math.max.apply(Math, yValues);
+  console.log(maxY);
   return(
     d3.scaleLinear()
       .range([props.style.height - props.style.margin.top - props.style.margin.bottom, 0])
@@ -57,6 +61,7 @@ export default (props) => {
     return (
       <svg width={props.style.width} height={props.style.height} >
         <g transform={translate}>
+          <Groups scales = {scales} style={style} data={data}/>
           <XYAxis scales={scales} style={props.style}/>
         </g>
       </svg>

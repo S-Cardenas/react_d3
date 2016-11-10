@@ -22743,6 +22743,10 @@
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
+	var _group = __webpack_require__(205);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var d3 = __webpack_require__(204);
@@ -22761,7 +22765,9 @@
 	};
 	
 	var x1Scale = function x1Scale(props) {
-	  return d3.scaleBand().domain(props.data.seriesNames).rangeRound([0, x0Scale(props).bandwidth()]);
+	  var seriesNames = props.data.seriesNames,
+	      series = seriesNames.slice(1, seriesNames.length);
+	  return d3.scaleBand().domain(series).rangeRound([0, x0Scale(props).bandwidth()]);
 	};
 	
 	// Returns a function that "scales" Y coordinates from the data to fit the chart
@@ -22771,6 +22777,7 @@
 	    yValues = yValues.concat(props.data.data[i]);
 	  }
 	  var maxY = Math.max.apply(Math, yValues);
+	  console.log(maxY);
 	  return d3.scaleLinear().range([props.style.height - props.style.margin.top - props.style.margin.bottom, 0]).domain([0, maxY]);
 	};
 	
@@ -22793,6 +22800,7 @@
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
+	      _react2.default.createElement(_group2.default, { scales: scales, style: style, data: data }),
 	      _react2.default.createElement(_x_y_axis2.default, { scales: scales, style: props.style })
 	    )
 	  );
@@ -39306,6 +39314,104 @@
 	
 	})));
 
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rectangles = __webpack_require__(206);
+	
+	var _rectangles2 = _interopRequireDefault(_rectangles);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Group = function Group(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data;
+	
+	  var groups = data.data[0].map(function (currentValue, index) {
+	    var xPos = scales.x0Scale(currentValue),
+	        translate = "translate(" + xPos + ",0)";
+	
+	    return _react2.default.createElement(
+	      'g',
+	      { className: 'group', key: index, transform: translate },
+	      _react2.default.createElement(_rectangles2.default, {
+	        scales: scales,
+	        style: style,
+	        data: data,
+	        currentIndex: index })
+	    );
+	  });
+	
+	  return _react2.default.createElement(
+	    'g',
+	    null,
+	    groups
+	  );
+	};
+	
+	exports.default = Group;
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Rectangles = function Rectangles(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      currentIndex = props.currentIndex;
+	
+	  var seriesNames = data.seriesNames,
+	      series = seriesNames.slice(1, seriesNames.length),
+	      yData = data.data.slice(1, data.data.length),
+	      chartHeight = style.height - style.margin.top - style.margin.bottom,
+	      barWidth = scales.x1Scale.bandwidth(),
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	  var rectangles = series.map(function (currentValue, i) {
+	    var xPos = scales.x1Scale(currentValue),
+	        yPos = scales.yScale(yData[i][currentIndex]),
+	        color = colors[i % colors.length];
+	    return _react2.default.createElement("rect", { x: xPos,
+	      y: yPos,
+	      width: barWidth,
+	      height: chartHeight - yPos,
+	      key: i,
+	      fill: color });
+	  });
+	
+	  return _react2.default.createElement(
+	    "g",
+	    null,
+	    rectangles
+	  );
+	};
+	
+	exports.default = Rectangles;
 
 /***/ }
 /******/ ]);
