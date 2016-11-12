@@ -2,8 +2,8 @@ import React from 'react';
 
 const Rectangles = (props) => {
   const {scales, style, data, currentIndex} = props;
-  const seriesNames = data.seriesNames,
-    series = seriesNames.slice(1, seriesNames.length),
+  const seriesTitles = data.seriesTitles,
+    series = seriesTitles.slice(1, seriesTitles.length),
     yData = data.data.slice(1, data.data.length),
     chartHeight = style.height - style.margin.top - style.margin.bottom,
     barWidth = scales.x1Scale.bandwidth(),

@@ -22756,33 +22756,60 @@
 	// import React and D3
 	
 	
-	// Returns a function that "scales" X coordinates from the data to fit the chart
+	// Finds the Ordinal/Nominal Domain Values
+	var findDomainValues = function findDomainValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0;
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
 	
+	  return data.data[idx];
+	};
+	
+	// Finds the Series Titles For Quantitive Values (SubDomain)
+	var findSubDomainValues = function findSubDomainValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0;
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
+	};
+	
+	// Returns a function that scales domain from the data to fit the chart
 	var x0Scale = function x0Scale(props) {
+	  var data = props.data,
+	      domain = findDomainValues(data);
 	
-	  var domain = props.data.data[0];
+	
 	  return d3.scaleBand().domain(domain).rangeRound([0, props.style.width - props.style.margin.left - props.style.margin.right]);
 	};
 	
+	// Reutrns a function to scale the subdomain from the data to fit the chart
 	var x1Scale = function x1Scale(props) {
-	  var seriesNames = props.data.seriesNames,
-	      series = seriesNames.slice(1, seriesNames.length);
-	  return d3.scaleBand().domain(series).rangeRound([0, x0Scale(props).bandwidth()]);
+	  var data = props.data,
+	      domain = findSubDomainValues(data);
+	
+	
+	  return d3.scaleBand().domain(domain).rangeRound([0, x0Scale(props).bandwidth()]);
 	};
 	
-	// Returns a function that "scales" Y coordinates from the data to fit the chart
+	// Returns a function that scales range coordinates
+	// from the data to fit the chart
 	var yScale = function yScale(props) {
 	  var yValues = [];
 	  for (var i = 1; i < props.data.data.length; i++) {
 	    yValues = yValues.concat(props.data.data[i]);
 	  }
 	  var maxY = Math.max.apply(Math, yValues);
-	  console.log(maxY);
 	  return d3.scaleLinear().range([props.style.height - props.style.margin.top - props.style.margin.bottom, 0]).domain([0, maxY]);
 	};
-	
-	// Returns a bar width proportional to amount of data
-	var barWidth = function barWidth(props) {};
 	
 	exports.default = function (props) {
 	  var data = props.data,
@@ -39386,8 +39413,8 @@
 	      data = props.data,
 	      currentIndex = props.currentIndex;
 	
-	  var seriesNames = data.seriesNames,
-	      series = seriesNames.slice(1, seriesNames.length),
+	  var seriesTitles = data.seriesTitles,
+	      series = seriesTitles.slice(1, seriesTitles.length),
 	      yData = data.data.slice(1, data.data.length),
 	      chartHeight = style.height - style.margin.top - style.margin.bottom,
 	      barWidth = scales.x1Scale.bandwidth(),

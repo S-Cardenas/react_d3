@@ -10,7 +10,8 @@ import Groups from './group';
 // Returns a function that "scales" X coordinates from the data to fit the chart
 
 const x0Scale = (props) => {
-
+  const { data } = props;
+  findSeriesDomain(data);
   var domain = props.data.data[0];
   return(
     d3.scaleBand()
@@ -18,6 +19,11 @@ const x0Scale = (props) => {
       .rangeRound([0, props.style.width - props.style.margin.left - props.style.margin.right])
 
   );
+};
+
+//Finds the Nominal/Ordinal Series Domain
+const findSeriesDomain = (data) => {
+  console.log(data.seriesTypes);
 };
 
 const x1Scale = (props) => {
@@ -37,7 +43,6 @@ const yScale = (props) => {
     yValues = yValues.concat(props.data.data[i]);
   }
   var maxY = Math.max.apply(Math, yValues);
-  console.log(maxY);
   return(
     d3.scaleLinear()
       .range([props.style.height - props.style.margin.top - props.style.margin.bottom, 0])
