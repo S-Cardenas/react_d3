@@ -22751,8 +22751,7 @@
 	
 	var d3 = __webpack_require__(204);
 	
-	// import rectangles from './rectangles';
-	// import Rectangles from './rectangles';
+	//import Axis and Groups
 	// import React and D3
 	
 	
@@ -22782,6 +22781,33 @@
 	  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
 	};
 	
+	// Find the series range values (Y values)
+	var findRangeValues = function findRangeValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0,
+	      yValues = [],
+	      maxY = void 0;
+	
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  yValues = data.data.slice(idx + 1, data.data.length);
+	
+	  return yValues;
+	};
+	
+	//Find the maximum Y value of the input data (Max Range Value)
+	var findMaxRangeValue = function findMaxRangeValue(data) {
+	  var yValues = findRangeValues(data).reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
+	
+	  return Math.max.apply(Math, yValues);
+	};
+	
 	// Returns a function that scales domain from the data to fit the chart
 	var x0Scale = function x0Scale(props) {
 	  var data = props.data,
@@ -22803,11 +22829,10 @@
 	// Returns a function that scales range coordinates
 	// from the data to fit the chart
 	var yScale = function yScale(props) {
-	  var yValues = [];
-	  for (var i = 1; i < props.data.data.length; i++) {
-	    yValues = yValues.concat(props.data.data[i]);
-	  }
-	  var maxY = Math.max.apply(Math, yValues);
+	  var data = props.data,
+	      maxY = findMaxRangeValue(data);
+	
+	
 	  return d3.scaleLinear().range([props.style.height - props.style.margin.top - props.style.margin.bottom, 0]).domain([0, maxY]);
 	};
 	
@@ -22815,11 +22840,14 @@
 	  var data = props.data,
 	      style = props.style;
 	
-	  var scales = {
-	    x0Scale: x0Scale(props),
+	  var scales = { x0Scale: x0Scale(props),
 	    x1Scale: x1Scale(props),
-	    yScale: yScale(props)
+	    yScale: yScale(props) };
+	  var parameters = { domain: findDomainValues(data),
+	    subDomain: findSubDomainValues(data),
+	    range: findRangeValues(data)
 	  };
+	
 	  var translate = "translate(" + props.style.margin.left + "," + props.style.margin.right + ")";
 	  return _react2.default.createElement(
 	    'svg',
@@ -22827,8 +22855,12 @@
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
-	      _react2.default.createElement(_group2.default, { scales: scales, style: style, data: data }),
-	      _react2.default.createElement(_x_y_axis2.default, { scales: scales, style: props.style })
+	      _react2.default.createElement(_group2.default, { scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters }),
+	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
+	        style: props.style })
 	    )
 	  );
 	};
@@ -39365,9 +39397,11 @@
 	var Group = function Group(props) {
 	  var scales = props.scales,
 	      style = props.style,
-	      data = props.data;
+	      data = props.data,
+	      parameters = props.parameters;
 	
-	  var groups = data.data[0].map(function (currentValue, index) {
+	  var domain = parameters.domain;
+	  var groups = domain.map(function (currentValue, index) {
 	    var xPos = scales.x0Scale(currentValue),
 	        translate = "translate(" + xPos + ",0)";
 	
@@ -39378,6 +39412,7 @@
 	        scales: scales,
 	        style: style,
 	        data: data,
+	        parameters: parameters,
 	        currentIndex: index })
 	    );
 	  });
@@ -39411,14 +39446,15 @@
 	  var scales = props.scales,
 	      style = props.style,
 	      data = props.data,
-	      currentIndex = props.currentIndex;
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters;
 	
-	  var seriesTitles = data.seriesTitles,
-	      series = seriesTitles.slice(1, seriesTitles.length),
-	      yData = data.data.slice(1, data.data.length),
+	  var series = parameters.subDomain,
+	      yData = parameters.range,
 	      chartHeight = style.height - style.margin.top - style.margin.bottom,
 	      barWidth = scales.x1Scale.bandwidth(),
 	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	
 	  var rectangles = series.map(function (currentValue, i) {
 	    var xPos = scales.x1Scale(currentValue),
 	        yPos = scales.yScale(yData[i][currentIndex]),

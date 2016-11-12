@@ -2,8 +2,7 @@
 import React from 'react';
 var d3 = require('d3');
 
-// import rectangles from './rectangles';
-// import Rectangles from './rectangles';
+//import Axis and Groups
 import XYAxis from './x_y_axis';
 import Groups from './group';
 
@@ -33,6 +32,33 @@ const findSubDomainValues = (data) => {
   return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
 };
 
+// Find the series range values (Y values)
+const findRangeValues = (data) => {
+  let seriesTypes = data.seriesTypes,
+      idx,
+      yValues = [],
+      maxY;
+
+  seriesTypes.forEach((type, i) => {
+    if (type === "Nominal" || type ==="Ordinal") {
+      idx = i;
+    }
+  });
+
+  yValues = data.data.slice(idx + 1, data.data.length);
+
+  return yValues;
+};
+
+//Find the maximum Y value of the input data (Max Range Value)
+const findMaxRangeValue = (data) => {
+  var yValues = findRangeValues(data).reduce((a,b) => {
+    return a.concat(b);
+  }, []);
+
+  return Math.max.apply(Math, yValues);
+};
+
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (props) => {
   const { data } = props,
@@ -50,7 +76,7 @@ const x0Scale = (props) => {
 const x1Scale = (props) => {
   const { data } = props,
         domain = findSubDomainValues(data);
-        
+
   return(
     d3.scaleBand()
       .domain(domain)
@@ -61,11 +87,9 @@ const x1Scale = (props) => {
 // Returns a function that scales range coordinates
 // from the data to fit the chart
 const yScale = (props) => {
-  var yValues = [];
-  for (let i = 1; i < props.data.data.length; i++) {
-    yValues = yValues.concat(props.data.data[i]);
-  }
-  var maxY = Math.max.apply(Math, yValues);
+  const { data } = props,
+        maxY = findMaxRangeValue(data);
+
   return(
     d3.scaleLinear()
       .range([props.style.height - props.style.margin.top
@@ -76,18 +100,25 @@ const yScale = (props) => {
 
 export default (props) => {
     const { data, style } = props;
-    const scales = {
-      x0Scale : x0Scale(props),
-      x1Scale : x1Scale(props),
-      yScale: yScale(props)
-    };
+    const scales = {  x0Scale : x0Scale(props),
+                      x1Scale : x1Scale(props),
+                      yScale: yScale(props) };
+    const parameters = { domain: findDomainValues(data),
+                         subDomain: findSubDomainValues(data),
+                         range: findRangeValues(data)
+                        };
+
     const translate = "translate(" + props.style.margin.left + ","
                       + props.style.margin.right + ")";
     return (
       <svg width={props.style.width} height={props.style.height} >
         <g transform={translate}>
-          <Groups scales = {scales} style={style} data={data}/>
-          <XYAxis scales={scales} style={props.style}/>
+          <Groups scales = {scales}
+                  style={style}
+                  data={data}
+                  parameters={parameters}/>
+          <XYAxis scales={scales}
+                  style={props.style}/>
         </g>
       </svg>
     );

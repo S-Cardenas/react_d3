@@ -2,8 +2,9 @@ import React from 'react';
 import Rectangles from './rectangles';
 
 const Group = (props) => {
-  const {scales, style, data} = props;
-  var groups = data.data[0].map((currentValue, index) => {
+  const {scales, style, data, parameters} = props;
+  const domain = parameters.domain;
+  var groups = domain.map((currentValue, index) => {
     let xPos = scales.x0Scale(currentValue),
         translate = "translate(" + xPos + ",0)";
 
@@ -13,6 +14,7 @@ const Group = (props) => {
           scales={scales}
           style={style}
           data={data}
+          parameters={parameters}
           currentIndex={index}/>
       </g>
     );
