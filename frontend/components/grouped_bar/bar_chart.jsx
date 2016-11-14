@@ -83,6 +83,7 @@ const y1Scale = (props) => {
   );
 };
 
+// Reutrns a function to scale the domain from the data to fit the chart
 const y0Scale = (props) => {
   const { data } = props,
         domain = findDomainValues(data);
@@ -95,28 +96,42 @@ const y0Scale = (props) => {
   );
 };
 
+// Find the Domain Axis Title
+const findDomainAxisTitle = (data) => {
+  let seriesTypes = data.seriesTypes,
+      idx;
+  seriesTypes.forEach((type, i) => {
+    if (type === "Nominal" || type ==="Ordinal") {
+      idx = i;
+    }
+  });
+
+  return data.seriesTitles[idx];
+};
+
 export default (props) => {
     const { data, style } = props;
     const scales = {  xScale : xScale(props),
                       y0Scale : y0Scale(props),
-                      y1Scale: y1Scale(props) };
+                      y1Scale: y1Scale(props),
+                      domainAxisTitle: findDomainAxisTitle(data)};
     const parameters = { domain: findDomainValues(data),
                          subDomain: findSubDomainValues(data),
                          range: findRangeValues(data)
                         };
 
-    const translate = "translate(" + props.style.margin.left + ","
-                      + props.style.margin.top + ")";
+    const translate = "translate(" + style.margin.left + ","
+                      + style.margin.top + ")";
 
     return (
-      <svg width={props.style.width} height={props.style.height} style={{outline: "thin solid blue"}}>
+      <svg width={style.width} height={style.height} style={{outline: "thin solid blue"}}>
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}
                   data={data}
                   parameters={parameters}/>
           <XYAxis scales={scales}
-                  style={props.style}/>
+                  style={style}/>
         </g>
       </svg>
     );

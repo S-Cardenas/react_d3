@@ -39535,7 +39535,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/total_medals_for_eight_countries_2012_hdfsform',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/historichomicideratesper100000inhabitants_hdfsformat',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -39673,6 +39673,7 @@
 	  return d3.scaleBand().domain(domain).rangeRound([0, y0Scale(props).bandwidth()]);
 	};
 	
+	// Reutrns a function to scale the domain from the data to fit the chart
 	var y0Scale = function y0Scale(props) {
 	  var data = props.data,
 	      domain = findDomainValues(data);
@@ -39681,23 +39682,37 @@
 	  return d3.scaleBand().domain(domain).rangeRound([props.style.height - props.style.margin.top - props.style.margin.bottom, 0]);
 	};
 	
+	// Find the Domain Axis Title
+	var findDomainAxisTitle = function findDomainAxisTitle(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0;
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  return data.seriesTitles[idx];
+	};
+	
 	exports.default = function (props) {
 	  var data = props.data,
 	      style = props.style;
 	
 	  var scales = { xScale: xScale(props),
 	    y0Scale: y0Scale(props),
-	    y1Scale: y1Scale(props) };
+	    y1Scale: y1Scale(props),
+	    domainAxisTitle: findDomainAxisTitle(data) };
 	  var parameters = { domain: findDomainValues(data),
 	    subDomain: findSubDomainValues(data),
 	    range: findRangeValues(data)
 	  };
 	
-	  var translate = "translate(" + props.style.margin.left + "," + props.style.margin.top + ")";
+	  var translate = "translate(" + style.margin.left + "," + style.margin.top + ")";
 	
 	  return _react2.default.createElement(
 	    'svg',
-	    { width: props.style.width, height: props.style.height, style: { outline: "thin solid blue" } },
+	    { width: style.width, height: style.height, style: { outline: "thin solid blue" } },
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
@@ -39706,7 +39721,7 @@
 	        data: data,
 	        parameters: parameters }),
 	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
-	        style: props.style })
+	        style: style })
 	    )
 	  );
 	};
@@ -39735,7 +39750,8 @@
 	var d3 = __webpack_require__(204);
 	
 	exports.default = function (props) {
-	  var style = props.style;
+	  var scales = props.scales,
+	      style = props.style;
 	
 	
 	  var chartHeight = style.height - style.margin.top - style.margin.bottom;
@@ -39743,13 +39759,15 @@
 	  var xSettings = {
 	    translate: "translate(0," + chartHeight + ")",
 	    scale: props.scales.xScale,
-	    orient: 'bottom'
+	    orient: 'bottom',
+	    title: undefined
 	  };
 	
 	  var ySettings = {
 	    translate: "translate(0,0)",
 	    scale: props.scales.y0Scale,
-	    orient: 'left'
+	    orient: 'left',
+	    title: props.scales.domainAxisTitle
 	  };
 	
 	  return _react2.default.createElement(
@@ -39824,11 +39842,14 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var style = this.props.style;
+	      var _props = this.props,
+	          scale = _props.scale,
+	          style = _props.style;
 	
 	      var x = void 0,
 	          y = void 0,
-	          rotate = void 0;
+	          rotate = void 0,
+	          title = void 0;
 	
 	      if (this.props.scale.orient === 'bottom') {
 	        x = (style.width - style.margin.left - style.margin.right) / 2;
@@ -39839,14 +39860,16 @@
 	        rotate = "rotate(-90," + x + "," + y + ")";
 	      }
 	
+	      title = scale.title ? scale.title : 'Axis Title';
+	
 	      return _react2.default.createElement(
 	        'g',
 	        null,
-	        _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: this.props.scale.translate }),
+	        _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: scale.translate }),
 	        _react2.default.createElement(
 	          'text',
 	          { textAnchor: "middle", x: x, y: y, transform: rotate },
-	          'Axis Title'
+	          title
 	        )
 	      );
 	    }

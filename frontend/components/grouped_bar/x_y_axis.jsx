@@ -5,7 +5,7 @@ var d3 = require('d3');
 
 export default (props) => {
 
-  const { style } = props;
+  const { scales, style } = props;
 
   var chartHeight = style.height - style.margin.top
                     - style.margin.bottom;
@@ -13,13 +13,15 @@ export default (props) => {
   const xSettings = {
     translate: "translate(0," + chartHeight + ")",
     scale: props.scales.xScale,
-    orient: 'bottom'
+    orient: 'bottom',
+    title: undefined
   };
 
   const ySettings = {
     translate: "translate(0,0)",
     scale: props.scales.y0Scale,
-    orient: 'left'
+    orient: 'left',
+    title: props.scales.domainAxisTitle
   };
 
   return (
