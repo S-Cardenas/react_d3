@@ -106,9 +106,10 @@ export default (props) => {
                         };
 
     const translate = "translate(" + props.style.margin.left + ","
-                      + props.style.margin.right + ")";
+                      + props.style.margin.top + ")";
+
     return (
-      <svg width={props.style.width} height={props.style.height} >
+      <svg width={props.style.width} height={props.style.height} style={{outline: "thin solid blue"}}>
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}

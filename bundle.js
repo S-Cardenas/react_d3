@@ -39509,9 +39509,9 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var style = {
-	  width: 960,
-	  height: 500,
-	  margin: { top: 20, right: 20, bottom: 30, left: 40 }
+	  width: 1020,
+	  height: 530,
+	  margin: { top: 20, right: 20, bottom: 60, left: 100 }
 	};
 	
 	var data;
@@ -39535,7 +39535,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/historichomicideratesper100000inhabitants_hdfsformat',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/total_medals_for_eight_countries_2012_hdfsform',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -39693,10 +39693,11 @@
 	    range: findRangeValues(data)
 	  };
 	
-	  var translate = "translate(" + props.style.margin.left + "," + props.style.margin.right + ")";
+	  var translate = "translate(" + props.style.margin.left + "," + props.style.margin.top + ")";
+	
 	  return _react2.default.createElement(
 	    'svg',
-	    { width: props.style.width, height: props.style.height },
+	    { width: props.style.width, height: props.style.height, style: { outline: "thin solid blue" } },
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
@@ -39734,8 +39735,10 @@
 	var d3 = __webpack_require__(204);
 	
 	exports.default = function (props) {
+	  var style = props.style;
 	
-	  var chartHeight = props.style.height - props.style.margin.top - props.style.margin.bottom;
+	
+	  var chartHeight = style.height - style.margin.top - style.margin.bottom;
 	
 	  var xSettings = {
 	    translate: "translate(0," + chartHeight + ")",
@@ -39752,8 +39755,8 @@
 	  return _react2.default.createElement(
 	    'g',
 	    { className: 'xy-axis' },
-	    _react2.default.createElement(_axis2.default, { scale: xSettings }),
-	    _react2.default.createElement(_axis2.default, { scale: ySettings })
+	    _react2.default.createElement(_axis2.default, { scale: xSettings, style: style }),
+	    _react2.default.createElement(_axis2.default, { scale: ySettings, style: style })
 	  );
 	};
 
@@ -39821,7 +39824,31 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: this.props.scale.translate });
+	      var style = this.props.style;
+	
+	      var x = void 0,
+	          y = void 0,
+	          rotate = void 0;
+	
+	      if (this.props.scale.orient === 'bottom') {
+	        x = (style.width - style.margin.left - style.margin.right) / 2;
+	        y = style.height - style.margin.bottom / 2;
+	      } else {
+	        x = -style.margin.left / 2;
+	        y = style.margin.top + (style.height - style.margin.top - style.margin.bottom) / 2;
+	        rotate = "rotate(-90," + x + "," + y + ")";
+	      }
+	
+	      return _react2.default.createElement(
+	        'g',
+	        null,
+	        _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: this.props.scale.translate }),
+	        _react2.default.createElement(
+	          'text',
+	          { textAnchor: "middle", x: x, y: y, transform: rotate },
+	          'Axis Title'
+	        )
+	      );
 	    }
 	  }]);
 	

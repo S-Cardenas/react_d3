@@ -2,9 +2,9 @@ import React from 'react';
 import BarChart from './bar_chart';
 
 const style = {
-  width   : 960,
-  height  : 500,
-  margin : {top: 20, right: 20, bottom: 30, left: 40},
+  width   : 1020,
+  height  : 530,
+  margin : {top: 20, right: 20, bottom: 60, left: 100},
 };
 
 var data;
@@ -20,7 +20,7 @@ class Chart extends React.Component {
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/historichomicideratesper100000inhabitants_hdfsformat',
+      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/total_medals_for_eight_countries_2012_hdfsform',
       success: function(response) {
         this.setState({data: response});
       }.bind(this),

@@ -5,7 +5,10 @@ var d3 = require('d3');
 
 export default (props) => {
 
-  var chartHeight = props.style.height - props.style.margin.top - props.style.margin.bottom;
+  const { style } = props;
+
+  var chartHeight = style.height - style.margin.top
+                    - style.margin.bottom;
 
   const xSettings = {
     translate: "translate(0," + chartHeight + ")",
@@ -21,8 +24,8 @@ export default (props) => {
 
   return (
     <g className="xy-axis">
-      <Axis scale={xSettings}/>
-      <Axis scale={ySettings}/>
+      <Axis scale={xSettings} style={style}/>
+      <Axis scale={ySettings} style={style}/>
     </g>
   );
 };

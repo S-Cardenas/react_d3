@@ -28,8 +28,31 @@ class Axis extends React.Component {
   }
 
   render() {
+    const { style } = this.props;
+    let x,
+        y,
+        rotate;
+
+    if (this.props.scale.orient === 'bottom') {
+      x = (style.width - style.margin.left - style.margin.right) / 2;
+      y = (style.height - style.margin.bottom / 2);
+    }
+
+    else {
+      x = -style.margin.left / 2;
+      y = style.margin.top + (style.height - style.margin.top
+          - style.margin.bottom) / 2;
+      rotate = "rotate(-90," + x + "," + y + ")";
+    }
+
     return (
-      <g className="axis" ref="axis" transform={this.props.scale.translate}></g>
+      <g>
+        <g className="axis" ref="axis" transform={this.props.scale.translate}></g>
+        <text textAnchor={"middle"} x={x} y={y} transform={rotate}>
+          Axis Title
+        </text>
+      </g>
+
     );
   }
 }
