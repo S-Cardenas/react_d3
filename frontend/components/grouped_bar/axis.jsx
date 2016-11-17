@@ -36,11 +36,11 @@ class Axis extends React.Component {
 
     if (this.props.scale.orient === 'bottom') {
       x = (style.width - style.margin.left - style.margin.right) / 2;
-      y = (style.height - style.margin.bottom / 2);
+      y = (style.height - style.margin.bottom + style.axisMargin.bottom);
     }
 
     else {
-      x = -style.margin.left / 2;
+      x = -style.margin.left + style.axisMargin.left;
       y = style.margin.top + (style.height - style.margin.top
           - style.margin.bottom) / 2;
       rotate = "rotate(-90," + x + "," + y + ")";
@@ -52,7 +52,10 @@ class Axis extends React.Component {
     return (
       <g>
         <g className="axis" ref="axis" transform={scale.translate}></g>
-        <text textAnchor={"middle"} x={x} y={y} transform={rotate}>
+        <text textAnchor={"middle"}
+              x={x}
+              y={y}
+              transform={rotate}>
           {title}
         </text>
       </g>

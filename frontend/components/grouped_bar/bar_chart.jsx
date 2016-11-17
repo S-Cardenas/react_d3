@@ -3,6 +3,7 @@ import React from 'react';
 var d3 = require('d3');
 
 //import Axis and Groups
+import Legend from './legend';
 import XYAxis from './x_y_axis';
 import Groups from './group';
 
@@ -124,7 +125,9 @@ export default (props) => {
                       + style.margin.top + ")";
 
     return (
-      <svg width={style.width} height={style.height} style={{outline: "thin solid blue"}}>
+      <svg width={style.width}
+           height={style.height}
+           style={{outline: "thin solid blue"}}>
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}
@@ -132,6 +135,10 @@ export default (props) => {
                   parameters={parameters}/>
           <XYAxis scales={scales}
                   style={style}/>
+          <Legend scales = {scales}
+                  style={style}
+                  data={data}
+                  parameters={parameters}/>
         </g>
       </svg>
     );
