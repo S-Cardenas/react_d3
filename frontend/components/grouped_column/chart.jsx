@@ -2,9 +2,12 @@ import React from 'react';
 import BarChart from './bar_chart';
 
 const style = {
-  width   : 960,
-  height  : 500,
-  margin : {top: 20, right: 20, bottom: 30, left: 40},
+  svgWidth : 1170,
+  svgHeight : 730,
+  chart : {height: 450, width: 1000},
+  margin : {top: 20, right: 20, bottom: 260, left: 150},
+  axisMargin : {bottom: 25, left: 25},
+  legend: {verticalPadding: 50}
 };
 
 var data;
@@ -34,7 +37,7 @@ class Chart extends React.Component {
     if (this.state.data) {
       return (
           <div>
-            <h1>Grouped Bar Chart</h1>
+            <h1>Grouped Column Chart</h1>
             <BarChart style={style} data={this.state.data}/>
           </div>
       );

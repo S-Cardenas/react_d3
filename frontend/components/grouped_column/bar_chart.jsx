@@ -3,6 +3,7 @@ import React from 'react';
 var d3 = require('d3');
 
 //import Axis and Groups
+import Legend from './legend';
 import XYAxis from './x_y_axis';
 import Groups from './group';
 
@@ -61,14 +62,13 @@ const findMaxRangeValue = (data) => {
 
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (props) => {
-  const { data } = props,
+  const { data, style } = props,
         domain = findDomainValues(data);
 
   return(
     d3.scaleBand()
       .domain(domain)
-      .rangeRound([0, props.style.width - props.style.margin.left
-                   - props.style.margin.right])
+      .rangeRound([0, style.chart.width])
   );
 };
 
@@ -84,41 +84,68 @@ const x1Scale = (props) => {
   );
 };
 
-// Returns a function that scales range coordinates
-// from the data to fit the chart
+// Returns a function to scale range coordinates from the data to fit the chart
 const yScale = (props) => {
-  const { data } = props,
+  const { data, style } = props,
         maxY = findMaxRangeValue(data);
 
   return(
     d3.scaleLinear()
-      .range([props.style.height - props.style.margin.top
-              - props.style.margin.bottom, 0])
+      .range([style.chart.height, 0])
       .domain([0, maxY])
   );
+};
+
+// Find the Domain Axis Title
+const findDomainAxisTitle = (data) => {
+
+  return data.xAxisTitle;
+};
+
+//Find the Range Axis Title
+const findRangeAxisTitle = (data) => {
+  return data.yAxisTitle;
+};
+
+//Calculates the required bottom margin of chart to fit entire Legend
+const calculateMarginBottom = (style, parameters) => {
+  return style.axisMargin.bottom +
+        (style.legend.verticalPadding) *
+        (Math.floor(parameters.subDomain.length / 3) + 2 );
 };
 
 export default (props) => {
     const { data, style } = props;
     const scales = {  x0Scale : x0Scale(props),
                       x1Scale : x1Scale(props),
-                      yScale: yScale(props) };
+                      yScale: yScale(props),
+                      domainAxisTitle: findDomainAxisTitle(data),
+                      rangeAxisTitle: findRangeAxisTitle(data)};
     const parameters = { domain: findDomainValues(data),
                          subDomain: findSubDomainValues(data),
                          range: findRangeValues(data)
                         };
 
-    const translate = "translate(" + props.style.margin.left + ","
-                      + props.style.margin.right + ")";
+    const translate = "translate(" + style.margin.left + ","
+                      + style.margin.right + ")";
+
+    const marginBottom = calculateMarginBottom(style, parameters);
+
+    style.svgHeight = style.margin.top + style.chart.height + marginBottom;
     return (
-      <svg width={props.style.width} height={props.style.height} >
+      <svg width={style.svgWidth}
+           height={style.svgHeight} >
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}
                   data={data}
                   parameters={parameters}/>
           <XYAxis scales={scales}
-                  style={props.style}/>
+                  style={style}/>
+          <Legend scales = {scales}
+                  style={style}
+                  data={data}
+                  parameters={parameters}/>
         </g>
       </svg>
     );

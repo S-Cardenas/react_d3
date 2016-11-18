@@ -98,15 +98,6 @@ const y0Scale = (props) => {
 
 // Find the Domain Axis Title
 const findDomainAxisTitle = (data) => {
-  // let seriesTypes = data.seriesTypes,
-  //     idx;
-  // seriesTypes.forEach((type, i) => {
-  //   if (type === "Nominal" || type ==="Ordinal") {
-  //     idx = i;
-  //   }
-  // });
-  //
-  // return data.seriesTitles[idx];
   return data.xAxisTitle;
 };
 

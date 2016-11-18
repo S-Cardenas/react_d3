@@ -13,10 +13,7 @@ class Axis extends React.Component {
 
   renderAxis() {
     var node  = this.refs.axis;
-    // console.log(d3.axisBottom(this.props.scale.scale));
 
-    // var axis = d3.svg.axis()
-    //                  .orient(this.props.scale.orient)
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
     }
@@ -28,8 +25,37 @@ class Axis extends React.Component {
   }
 
   render() {
+    const { scale, style } = this.props;
+    let x,
+        y,
+        rotate,
+        title;
+
+    if (this.props.scale.orient === 'bottom') {
+      x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
+      y = (style.margin.top + style.chart.height + style.axisMargin.bottom);
+    }
+
+    else {
+      x = -style.margin.left + style.axisMargin.left;
+      y = style.margin.top + (style.chart.height / 2) ;
+      rotate = "rotate(-90," + x + "," + y + ")";
+    }
+
+    title = (scale.title) ? scale.title : 'Axis Title';
+
+
     return (
-      <g className="axis" ref="axis" transform={this.props.scale.translate}></g>
+      <g>
+        <g className="axis" ref="axis" transform={scale.translate}></g>
+        <text textAnchor={"middle"}
+              x={x}
+              y={y}
+              transform={rotate}>
+          {title}
+        </text>
+      </g>
+
     );
   }
 }

@@ -11,16 +11,16 @@ export default (props) => {
 
   const xSettings = {
     translate: "translate(0," + chartHeight + ")",
-    scale: props.scales.xScale,
+    scale: scales.xScale,
     orient: 'bottom',
-    title: props.scales.rangeAxisTitle
+    title: scales.rangeAxisTitle
   };
 
   const ySettings = {
     translate: "translate(0,0)",
-    scale: props.scales.y0Scale,
+    scale: scales.y0Scale,
     orient: 'left',
-    title: props.scales.domainAxisTitle
+    title: scales.domainAxisTitle
   };
 
   return (

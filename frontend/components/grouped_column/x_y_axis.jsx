@@ -5,24 +5,28 @@ var d3 = require('d3');
 
 export default (props) => {
 
-  var chartHeight = props.style.height - props.style.margin.top - props.style.margin.bottom;
+  const { scales, style } = props;
+  console.log(style);
+  var chartHeight = style.chart.height;
 
   const xSettings = {
     translate: "translate(0," + chartHeight + ")",
-    scale: props.scales.x0Scale,
-    orient: 'bottom'
+    scale: scales.x0Scale,
+    orient: 'bottom',
+    title: scales.domainAxisTitle
   };
 
   const ySettings = {
     translate: "translate(0,0)",
-    scale: props.scales.yScale,
-    orient: 'left'
+    scale: scales.yScale,
+    orient: 'left',
+    title: scales.rangeAxisTitle
   };
 
   return (
     <g className="xy-axis">
-      <Axis scale={xSettings}/>
-      <Axis scale={ySettings}/>
+      <Axis scale={xSettings} style={style}/>
+      <Axis scale={ySettings} style={style}/>
     </g>
   );
 };
