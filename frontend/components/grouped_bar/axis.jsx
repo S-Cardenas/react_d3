@@ -13,10 +13,7 @@ class Axis extends React.Component {
 
   renderAxis() {
     var node  = this.refs.axis;
-    // console.log(d3.axisBottom(this.props.scale.scale));
 
-    // var axis = d3.svg.axis()
-    //                  .orient(this.props.scale.orient)
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
     }
