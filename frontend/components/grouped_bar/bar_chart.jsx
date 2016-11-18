@@ -139,11 +139,11 @@ export default (props) => {
 
     const marginBottom = calculateMarginBottom(style, parameters);
 
-    style.height = style.margin.top + style.chart.height + marginBottom;
+    style.svgHeight = style.margin.top + style.chart.height + marginBottom;
 
     return (
-      <svg width={style.width}
-           height={style.height}>
+      <svg width={style.svgWidth}
+           height={style.svgHeight}>
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}

@@ -62,10 +62,14 @@
 	
 	var _chart2 = _interopRequireDefault(_chart);
 	
+	var _chart3 = __webpack_require__(213);
+	
+	var _chart4 = _interopRequireDefault(_chart3);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  _reactDom2.default.render(_react2.default.createElement(_chart2.default, null), document.getElementById('root'));
+	  _reactDom2.default.render(_react2.default.createElement(_chart4.default, null), document.getElementById('root'));
 	});
 	
 	//Store and Root Component
@@ -39483,6 +39487,611 @@
 	      y: yPos,
 	      width: barWidth,
 	      height: chartHeight - yPos,
+	      key: i,
+	      fill: color });
+	  });
+	
+	  return _react2.default.createElement(
+	    "g",
+	    null,
+	    rectangles
+	  );
+	};
+	
+	exports.default = Rectangles;
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _bar_chart = __webpack_require__(214);
+	
+	var _bar_chart2 = _interopRequireDefault(_bar_chart);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var style = {
+	  svgWidth: 1170,
+	  svgHeight: 730,
+	  chart: { height: 450, width: 1000 },
+	  margin: { top: 20, right: 20, bottom: 260, left: 150 },
+	  axisMargin: { bottom: 25, left: 25 },
+	  legend: { verticalPadding: 50 }
+	};
+	
+	var data;
+	
+	var Chart = function (_React$Component) {
+	  _inherits(Chart, _React$Component);
+	
+	  function Chart(props) {
+	    _classCallCheck(this, Chart);
+	
+	    var _this = _possibleConstructorReturn(this, (Chart.__proto__ || Object.getPrototypeOf(Chart)).call(this, props));
+	
+	    _this.state = {
+	      data: undefined
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Chart, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        type: 'GET',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/event_medals_for_top5population_countries_2012_hdfsform',
+	        success: function (response) {
+	          this.setState({ data: response });
+	        }.bind(this),
+	        error: function error(e) {
+	          console.log(e);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      if (this.state.data) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            'Grouped Bar Chart'
+	          ),
+	          _react2.default.createElement(_bar_chart2.default, { style: style, data: this.state.data })
+	        );
+	      } else {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          'LOADING......'
+	        );
+	      }
+	    }
+	  }]);
+	
+	  return Chart;
+	}(_react2.default.Component);
+	
+	exports.default = Chart;
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _legend = __webpack_require__(215);
+	
+	var _legend2 = _interopRequireDefault(_legend);
+	
+	var _x_y_axis = __webpack_require__(216);
+	
+	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
+	
+	var _group = __webpack_require__(218);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var d3 = __webpack_require__(210);
+	
+	//import Axis and Groups
+	// import React and D3
+	
+	
+	// Finds the Ordinal/Nominal Domain Values
+	var findDomainValues = function findDomainValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0;
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  return data.data[idx];
+	};
+	
+	// Finds the Series Titles For Quantitive Values (SubDomain)
+	var findSubDomainValues = function findSubDomainValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0;
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
+	};
+	
+	// Find the series range values (Y values)
+	var findRangeValues = function findRangeValues(data) {
+	  var seriesTypes = data.seriesTypes,
+	      idx = void 0,
+	      yValues = [],
+	      maxY = void 0;
+	
+	  seriesTypes.forEach(function (type, i) {
+	    if (type === "Nominal" || type === "Ordinal") {
+	      idx = i;
+	    }
+	  });
+	
+	  yValues = data.data.slice(idx + 1, data.data.length);
+	
+	  return yValues;
+	};
+	
+	//Find the maximum Y value of the input data (Max Range Value)
+	var findMaxRangeValue = function findMaxRangeValue(data) {
+	  var yValues = findRangeValues(data).reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
+	
+	  return Math.max.apply(Math, yValues);
+	};
+	
+	// Returns a function to scale the range from the data to fit the chart
+	var xScale = function xScale(props) {
+	  var data = props.data,
+	      style = props.style,
+	      maxY = findMaxRangeValue(data);
+	
+	
+	  return d3.scaleLinear().range([0, style.chart.width]).domain([0, maxY]);
+	};
+	
+	// Returnsns a function to scale the subdomain from the data to fit the chart
+	var y1Scale = function y1Scale(props) {
+	  var data = props.data,
+	      style = props.style,
+	      domain = findSubDomainValues(data);
+	
+	
+	  return d3.scaleBand().domain(domain).rangeRound([0, y0Scale(props).bandwidth()]);
+	};
+	
+	// Reutrns a function to scale the domain from the data to fit the chart
+	var y0Scale = function y0Scale(props) {
+	  var data = props.data,
+	      style = props.style,
+	      domain = findDomainValues(data);
+	
+	
+	  return d3.scaleBand().domain(domain).rangeRound([style.chart.height, 0]);
+	};
+	
+	// Find the Domain Axis Title
+	var findDomainAxisTitle = function findDomainAxisTitle(data) {
+	  // let seriesTypes = data.seriesTypes,
+	  //     idx;
+	  // seriesTypes.forEach((type, i) => {
+	  //   if (type === "Nominal" || type ==="Ordinal") {
+	  //     idx = i;
+	  //   }
+	  // });
+	  //
+	  // return data.seriesTitles[idx];
+	  return data.xAxisTitle;
+	};
+	
+	//Find the Range Axis Title
+	var findRangeAxisTitle = function findRangeAxisTitle(data) {
+	  return data.yAxisTitle;
+	};
+	
+	//Calculates the required bottom margin of chart to fit entire Legend
+	var calculateMarginBottom = function calculateMarginBottom(style, parameters) {
+	  return style.axisMargin.bottom + style.legend.verticalPadding * (Math.floor(parameters.subDomain.length / 3) + 2);
+	};
+	
+	exports.default = function (props) {
+	  var data = props.data,
+	      style = props.style;
+	
+	
+	  var scales = { xScale: xScale(props),
+	    y0Scale: y0Scale(props),
+	    y1Scale: y1Scale(props),
+	    domainAxisTitle: findDomainAxisTitle(data),
+	    rangeAxisTitle: findRangeAxisTitle(data) };
+	  var parameters = { domain: findDomainValues(data),
+	    subDomain: findSubDomainValues(data),
+	    range: findRangeValues(data)
+	  };
+	  var translate = "translate(" + style.margin.left + "," + style.margin.top + ")";
+	
+	  var marginBottom = calculateMarginBottom(style, parameters);
+	
+	  style.svgHeight = style.margin.top + style.chart.height + marginBottom;
+	
+	  return _react2.default.createElement(
+	    'svg',
+	    { width: style.svgWidth,
+	      height: style.svgHeight },
+	    _react2.default.createElement(
+	      'g',
+	      { transform: translate },
+	      _react2.default.createElement(_group2.default, { scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters }),
+	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
+	        style: style }),
+	      _react2.default.createElement(_legend2.default, { scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters })
+	    )
+	  );
+	};
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Legend = function Legend(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters,
+	      subDomain = parameters.subDomain,
+	      chartWidth = style.chart.width,
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	
+	
+	  var legendValues = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 3),
+	        y = style.legend.verticalPadding * Math.floor(i / 3),
+	        width = chartWidth / 4 - 30,
+	        color = colors[i % colors.length],
+	        valueStyle = { fontSize: "20px" };
+	    return _react2.default.createElement(
+	      "text",
+	      { key: i, x: x, y: y, style: valueStyle, textLength: width },
+	      value
+	    );
+	  });
+	
+	  var legendBorders = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 3),
+	        y = style.legend.verticalPadding * Math.floor(i / 3) - 20,
+	        width = chartWidth / 4 - 15,
+	        padding = 10,
+	        color = colors[i % colors.length],
+	        valueStyle = { outline: "thin solid" + color, fontSize: "20px" };
+	
+	    return _react2.default.createElement("rect", { x: x - padding,
+	      y: y,
+	      width: width,
+	      height: 25,
+	      key: i,
+	      stroke: color,
+	      fill: "transparent",
+	      rx: 5,
+	      ry: 5 });
+	  });
+	
+	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 3) + ")";
+	
+	  return _react2.default.createElement(
+	    "g",
+	    { transform: translate },
+	    legendValues,
+	    legendBorders
+	  );
+	};
+	
+	exports.default = Legend;
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _axis = __webpack_require__(217);
+	
+	var _axis2 = _interopRequireDefault(_axis);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// unfinished/src/components/x-y-axis.jsx
+	var d3 = __webpack_require__(210);
+	
+	exports.default = function (props) {
+	  var scales = props.scales,
+	      style = props.style;
+	
+	
+	  var chartHeight = style.chart.height;
+	
+	  var xSettings = {
+	    translate: "translate(0," + chartHeight + ")",
+	    scale: props.scales.xScale,
+	    orient: 'bottom',
+	    title: props.scales.rangeAxisTitle
+	  };
+	
+	  var ySettings = {
+	    translate: "translate(0,0)",
+	    scale: props.scales.y0Scale,
+	    orient: 'left',
+	    title: props.scales.domainAxisTitle
+	  };
+	
+	  return _react2.default.createElement(
+	    'g',
+	    { className: 'xy-axis' },
+	    _react2.default.createElement(_axis2.default, { scale: xSettings, style: style }),
+	    _react2.default.createElement(_axis2.default, { scale: ySettings, style: style })
+	  );
+	};
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var d3 = __webpack_require__(210);
+	
+	var Axis = function (_React$Component) {
+	  _inherits(Axis, _React$Component);
+	
+	  function Axis() {
+	    _classCallCheck(this, Axis);
+	
+	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	  }
+	
+	  _createClass(Axis, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.renderAxis();
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      this.renderAxis();
+	    }
+	  }, {
+	    key: 'renderAxis',
+	    value: function renderAxis() {
+	      var node = this.refs.axis;
+	
+	      if (this.props.scale.orient === 'bottom') {
+	        var axis = d3.axisBottom(this.props.scale.scale);
+	      } else if (this.props.scale.orient === 'left') {
+	        var axis = d3.axisLeft(this.props.scale.scale);
+	      }
+	
+	      d3.select(node).call(axis);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          scale = _props.scale,
+	          style = _props.style;
+	
+	      var x = void 0,
+	          y = void 0,
+	          rotate = void 0,
+	          title = void 0;
+	
+	      if (this.props.scale.orient === 'bottom') {
+	        x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
+	        y = style.margin.top + style.chart.height + style.axisMargin.bottom;
+	      } else {
+	        x = -style.margin.left + style.axisMargin.left;
+	        y = style.margin.top + style.chart.height / 2;
+	        rotate = "rotate(-90," + x + "," + y + ")";
+	      }
+	
+	      title = scale.title ? scale.title : 'Axis Title';
+	
+	      return _react2.default.createElement(
+	        'g',
+	        null,
+	        _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: scale.translate }),
+	        _react2.default.createElement(
+	          'text',
+	          { textAnchor: "middle",
+	            x: x,
+	            y: y,
+	            transform: rotate },
+	          title
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Axis;
+	}(_react2.default.Component);
+	
+	exports.default = Axis;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rectangles = __webpack_require__(219);
+	
+	var _rectangles2 = _interopRequireDefault(_rectangles);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Group = function Group(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      parameters = props.parameters;
+	
+	  var domain = parameters.domain;
+	  var groups = domain.map(function (currentValue, index) {
+	    var yPos = scales.y0Scale(currentValue),
+	        translate = "translate(0," + yPos + ")";
+	
+	    return _react2.default.createElement(
+	      'g',
+	      { className: 'group', key: index, transform: translate },
+	      _react2.default.createElement(_rectangles2.default, {
+	        scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters,
+	        currentIndex: index })
+	    );
+	  });
+	
+	  return _react2.default.createElement(
+	    'g',
+	    null,
+	    groups
+	  );
+	};
+	
+	exports.default = Group;
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Rectangles = function Rectangles(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters;
+	
+	  var series = parameters.subDomain,
+	      xData = parameters.range,
+	      chartWidth = style.chart.width,
+	      barWidth = scales.y1Scale.bandwidth(),
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	
+	  var rectangles = series.map(function (currentValue, i) {
+	    var yPos = scales.y1Scale(currentValue),
+	        xPos = scales.xScale(xData[i][currentIndex]),
+	        color = colors[i % colors.length];
+	    return _react2.default.createElement("rect", { x: 0,
+	      y: yPos,
+	      width: xPos,
+	      height: barWidth,
 	      key: i,
 	      fill: color });
 	  });

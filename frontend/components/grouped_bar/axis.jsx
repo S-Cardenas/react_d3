@@ -32,7 +32,7 @@ class Axis extends React.Component {
         title;
 
     if (this.props.scale.orient === 'bottom') {
-      x = (style.width - style.margin.left - style.margin.right) / 2;
+      x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
       y = (style.margin.top + style.chart.height + style.axisMargin.bottom);
     }
 

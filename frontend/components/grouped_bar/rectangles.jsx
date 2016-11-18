@@ -4,7 +4,7 @@ const Rectangles = (props) => {
   const {scales, style, data, currentIndex, parameters} = props;
   const series = parameters.subDomain,
         xData = parameters.range,
-        chartWidth = style.width - style.margin.left - style.margin.right,
+        chartWidth = style.chart.width,
         barWidth = scales.y1Scale.bandwidth(),
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
 
