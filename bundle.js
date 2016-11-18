@@ -39764,6 +39764,10 @@
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
+	var _group = __webpack_require__(226);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var d3 = __webpack_require__(211);
@@ -39771,7 +39775,6 @@
 	//import Axis and Groups
 	// import React and D3
 	
-	// import Group from './group';
 	
 	// Finds the Ordinal/Nominal Domain Values
 	var findDomainValues = function findDomainValues(data) {
@@ -39783,7 +39786,7 @@
 	    }
 	  });
 	
-	  return data.data[idx];
+	  return convertToYear(data.data[idx]);
 	};
 	
 	// Finds the Series Titles For Quantitive Values (SubDomain)
@@ -39826,14 +39829,21 @@
 	  return Math.max.apply(Math, yValues);
 	};
 	
+	// Find the minimum Y value of the input data (Min Range Value)
+	var findMinRangeValue = function findMinRangeValue(data) {
+	  var yValues = findRangeValues(data).reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
+	
+	  return Math.min.apply(Math, yValues);
+	};
+	
 	// Returns a function that scales domain from the data to fit the chart
 	var x0Scale = function x0Scale(props) {
 	  var data = props.data,
 	      style = props.style;
 	
 	  var domain = findDomainValues(data);
-	
-	  domain = convertToYear(domain);
 	
 	  return d3.scaleBand().domain(domain).rangeRound([0, style.chart.width]);
 	};
@@ -39851,10 +39861,11 @@
 	var yScale = function yScale(props) {
 	  var data = props.data,
 	      style = props.style,
-	      maxY = findMaxRangeValue(data);
+	      maxY = findMaxRangeValue(data),
+	      minY = findMinRangeValue(data);
 	
 	
-	  return d3.scaleLinear().range([style.chart.height, 0]).domain([0, maxY]);
+	  return d3.scaleLinear().range([style.chart.height, 0]).domain([minY, maxY]);
 	};
 	
 	// Convert Epoch to Standard Time (Year)
@@ -39910,6 +39921,10 @@
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
+	      _react2.default.createElement(_group2.default, { scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters }),
 	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
 	        style: style }),
 	      _react2.default.createElement(_legend2.default, { scales: scales,
@@ -40143,6 +40158,107 @@
 	}(_react2.default.Component);
 	
 	exports.default = Axis;
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _line = __webpack_require__(227);
+	
+	var _line2 = _interopRequireDefault(_line);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Group = function Group(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      parameters = props.parameters;
+	
+	  var domain = parameters.domain,
+	      series = parameters.subDomain;
+	  var paths = series.map(function (currentValue, index) {
+	
+	    return _react2.default.createElement(
+	      'g',
+	      { className: 'group', key: index },
+	      _react2.default.createElement(_line2.default, { scales: scales,
+	        style: style,
+	        data: data,
+	        parameters: parameters,
+	        currentIndex: index })
+	    );
+	  });
+	
+	  return _react2.default.createElement(
+	    'g',
+	    null,
+	    paths
+	  );
+	};
+	
+	exports.default = Group;
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Line = function Line(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters,
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
+	      yValues = data.data[currentIndex + 1],
+	      xValues = parameters.domain;
+	
+	
+	  var path = "",
+	      color = colors[currentIndex % colors.length];
+	
+	  for (var i = 0; i < xValues.length; i++) {
+	    var pos = undefined,
+	        x = scales.x0Scale(xValues[i]),
+	        y = scales.yScale(yValues[i]);
+	    if (i === 0) {
+	      pos = "M" + x + "," + y;
+	      path += pos;
+	    } else {
+	      pos = "L" + x + "," + y;
+	      path += pos;
+	    }
+	  }
+	
+	  return _react2.default.createElement("path", { d: path,
+	    fill: 'none',
+	    stroke: color,
+	    strokeWidth: "3" });
+	};
+	
+	exports.default = Line;
 
 /***/ }
 /******/ ]);

@@ -5,7 +5,7 @@ var d3 = require('d3');
 //import Axis and Groups
 import Legend from './legend';
 import XYAxis from './x_y_axis';
-// import Group from './group';
+import Groups from './group';
 
 // Finds the Ordinal/Nominal Domain Values
 const findDomainValues = (data) => {
@@ -17,7 +17,7 @@ const findDomainValues = (data) => {
     }
   });
 
-  return data.data[idx];
+  return convertToYear(data.data[idx]);
 };
 
 // Finds the Series Titles For Quantitive Values (SubDomain)
@@ -60,12 +60,19 @@ const findMaxRangeValue = (data) => {
   return Math.max.apply(Math, yValues);
 };
 
+// Find the minimum Y value of the input data (Min Range Value)
+const findMinRangeValue = (data) => {
+  var yValues = findRangeValues(data).reduce((a,b) => {
+    return a.concat(b);
+  }, []);
+
+  return Math.min.apply(Math, yValues);
+};
+
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (props) => {
   const { data, style } = props;
   let domain = findDomainValues(data);
-
-  domain = convertToYear(domain);
 
   return(
     d3.scaleBand()
@@ -89,12 +96,13 @@ const x1Scale = (props) => {
 // Returns a function to scale range coordinates from the data to fit the chart
 const yScale = (props) => {
   const { data, style } = props,
-        maxY = findMaxRangeValue(data);
+        maxY = findMaxRangeValue(data),
+        minY = findMinRangeValue(data);
 
   return(
     d3.scaleLinear()
       .range([style.chart.height, 0])
-      .domain([0, maxY])
+      .domain([minY, maxY])
   );
 };
 
@@ -149,6 +157,10 @@ export default (props) => {
       <svg width={style.svgWidth}
            height={style.svgHeight} >
         <g transform={translate}>
+          <Groups scales = {scales}
+                  style={style}
+                  data={data}
+                  parameters={parameters}/>
           <XYAxis scales={scales}
                   style={style}/>
           <Legend scales = {scales}
