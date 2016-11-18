@@ -1,0 +1,161 @@
+// import React and D3
+import React from 'react';
+var d3 = require('d3');
+
+//import Axis and Groups
+import Legend from './legend';
+import XYAxis from './x_y_axis';
+// import Group from './group';
+
+// Finds the Ordinal/Nominal Domain Values
+const findDomainValues = (data) => {
+  let seriesTypes = data.seriesTypes,
+      idx;
+  seriesTypes.forEach((type, i) => {
+    if (type === "Nominal" || type ==="Ordinal") {
+      idx = i;
+    }
+  });
+
+  return data.data[idx];
+};
+
+// Finds the Series Titles For Quantitive Values (SubDomain)
+const findSubDomainValues = (data) => {
+  let seriesTypes = data.seriesTypes,
+      idx;
+  seriesTypes.forEach((type, i) => {
+    if (type === "Nominal" || type ==="Ordinal") {
+      idx = i;
+    }
+  });
+
+  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
+};
+
+// Find the series range values (Y values)
+const findRangeValues = (data) => {
+  let seriesTypes = data.seriesTypes,
+      idx,
+      yValues = [],
+      maxY;
+
+  seriesTypes.forEach((type, i) => {
+    if (type === "Nominal" || type ==="Ordinal") {
+      idx = i;
+    }
+  });
+
+  yValues = data.data.slice(idx + 1, data.data.length);
+
+  return yValues;
+};
+
+//Find the maximum Y value of the input data (Max Range Value)
+const findMaxRangeValue = (data) => {
+  var yValues = findRangeValues(data).reduce((a,b) => {
+    return a.concat(b);
+  }, []);
+
+  return Math.max.apply(Math, yValues);
+};
+
+// Returns a function that scales domain from the data to fit the chart
+const x0Scale = (props) => {
+  const { data, style } = props;
+  let domain = findDomainValues(data);
+
+  domain = convertToYear(domain);
+
+  return(
+    d3.scaleBand()
+      .domain(domain)
+      .rangeRound([0, style.chart.width])
+  );
+};
+
+// Reutrns a function to scale the subdomain from the data to fit the chart
+const x1Scale = (props) => {
+  const { data } = props,
+        domain = findSubDomainValues(data);
+
+  return(
+    d3.scaleBand()
+      .domain(domain)
+      .rangeRound([0,x0Scale(props).bandwidth()])
+  );
+};
+
+// Returns a function to scale range coordinates from the data to fit the chart
+const yScale = (props) => {
+  const { data, style } = props,
+        maxY = findMaxRangeValue(data);
+
+  return(
+    d3.scaleLinear()
+      .range([style.chart.height, 0])
+      .domain([0, maxY])
+  );
+};
+
+// Convert Epoch to Standard Time (Year)
+const convertToYear = (domain) => {
+  let newDomain = domain.map( (epoch) => {
+    let date = new Date(0);
+    date.setUTCSeconds(epoch);
+    return date.getFullYear();
+  });
+
+  return newDomain;
+};
+
+// Find the Domain Axis Title
+const findDomainAxisTitle = (data) => {
+  return data.xAxisTitle;
+};
+
+//Find the Range Axis Title
+const findRangeAxisTitle = (data) => {
+  return data.yAxisTitle;
+};
+
+//Calculates the required bottom margin of chart to fit entire Legend
+const calculateMarginBottom = (style, parameters) => {
+  return style.axisMargin.bottom +
+        (style.legend.verticalPadding) *
+        (Math.floor(parameters.subDomain.length / 3) + 2 );
+};
+
+export default (props) => {
+    const { data, style } = props;
+    const scales = {  x0Scale : x0Scale(props),
+                      x1Scale : x1Scale(props),
+                      yScale: yScale(props),
+                      domainAxisTitle: findDomainAxisTitle(data),
+                      rangeAxisTitle: findRangeAxisTitle(data)};
+    const parameters = { domain: findDomainValues(data),
+                         subDomain: findSubDomainValues(data),
+                         range: findRangeValues(data)
+                        };
+
+    const translate = "translate(" + style.margin.left + ","
+                      + style.margin.right + ")";
+
+    const marginBottom = calculateMarginBottom(style, parameters);
+
+    style.svgHeight = style.margin.top + style.chart.height + marginBottom;
+
+    return (
+      <svg width={style.svgWidth}
+           height={style.svgHeight} >
+        <g transform={translate}>
+          <XYAxis scales={scales}
+                  style={style}/>
+          <Legend scales = {scales}
+                  style={style}
+                  data={data}
+                  parameters={parameters}/>
+        </g>
+      </svg>
+    );
+};

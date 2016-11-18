@@ -1,9 +1,9 @@
 import React from 'react';
-import BarChart from './bar_chart';
+import LineChart from './line_chart';
 
 const style = {
-  svgWidth   : 1170,
-  svgHeight  : 730,
+  svgWidth : 1170,
+  svgHeight : 730,
   chart : {height: 450, width: 1000},
   margin : {top: 20, right: 20, bottom: 260, left: 150},
   axisMargin : {bottom: 25, left: 25},
@@ -23,7 +23,7 @@ class Chart extends React.Component {
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/how_often_talk_about_economy_hdfsformat',
+      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/federal_hate_crime_statistics_2006_2014_single_bias_incidents_hdfsformat',
       success: function(response) {
         this.setState({data: response});
       }.bind(this),
@@ -37,8 +37,8 @@ class Chart extends React.Component {
     if (this.state.data) {
       return (
           <div>
-            <h1>Grouped Bar Chart</h1>
-            <BarChart style={style} data={this.state.data}/>
+            <h1>Line Chart</h1>
+            <LineChart style={style} data={this.state.data}/>
           </div>
       );
     }
