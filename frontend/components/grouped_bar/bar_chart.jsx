@@ -98,15 +98,21 @@ const y0Scale = (props) => {
 
 // Find the Domain Axis Title
 const findDomainAxisTitle = (data) => {
-  let seriesTypes = data.seriesTypes,
-      idx;
-  seriesTypes.forEach((type, i) => {
-    if (type === "Nominal" || type ==="Ordinal") {
-      idx = i;
-    }
-  });
+  // let seriesTypes = data.seriesTypes,
+  //     idx;
+  // seriesTypes.forEach((type, i) => {
+  //   if (type === "Nominal" || type ==="Ordinal") {
+  //     idx = i;
+  //   }
+  // });
+  //
+  // return data.seriesTitles[idx];
+  return data.xAxisTitle;
+};
 
-  return data.seriesTitles[idx];
+//Find the Range Axis Title
+const findRangeAxisTitle = (data) => {
+  return data.yAxisTitle;
 };
 
 //Calculates the required bottom margin of chart to fit entire Legend
@@ -122,7 +128,8 @@ export default (props) => {
     const scales = {  xScale : xScale(props),
                       y0Scale : y0Scale(props),
                       y1Scale: y1Scale(props),
-                      domainAxisTitle: findDomainAxisTitle(data)};
+                      domainAxisTitle: findDomainAxisTitle(data),
+                      rangeAxisTitle: findRangeAxisTitle(data)};
     const parameters = { domain: findDomainValues(data),
                          subDomain: findSubDomainValues(data),
                          range: findRangeValues(data)

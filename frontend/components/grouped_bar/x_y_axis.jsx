@@ -13,7 +13,7 @@ export default (props) => {
     translate: "translate(0," + chartHeight + ")",
     scale: props.scales.xScale,
     orient: 'bottom',
-    title: undefined
+    title: props.scales.rangeAxisTitle
   };
 
   const ySettings = {
