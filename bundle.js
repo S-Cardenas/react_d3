@@ -39531,8 +39531,10 @@
 	var style = {
 	  width: 1170,
 	  height: 730,
+	  chart: { height: 450, width: 1000 },
 	  margin: { top: 20, right: 20, bottom: 260, left: 150 },
-	  axisMargin: { bottom: 25, left: 25 }
+	  axisMargin: { bottom: 25, left: 25 },
+	  legend: { verticalPadding: 50 }
 	};
 	
 	var data;
@@ -39608,15 +39610,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(219);
+	var _legend = __webpack_require__(215);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(215);
+	var _x_y_axis = __webpack_require__(216);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(217);
+	var _group = __webpack_require__(218);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -39681,17 +39683,20 @@
 	  return Math.max.apply(Math, yValues);
 	};
 	
+	// Returns a function to scale the range from the data to fit the chart
 	var xScale = function xScale(props) {
 	  var data = props.data,
+	      style = props.style,
 	      maxY = findMaxRangeValue(data);
 	
 	
-	  return d3.scaleLinear().range([0, props.style.width - props.style.margin.left - props.style.margin.right]).domain([0, maxY]);
+	  return d3.scaleLinear().range([0, style.chart.width]).domain([0, maxY]);
 	};
 	
-	// Reutrns a function to scale the subdomain from the data to fit the chart
+	// Returnsns a function to scale the subdomain from the data to fit the chart
 	var y1Scale = function y1Scale(props) {
 	  var data = props.data,
+	      style = props.style,
 	      domain = findSubDomainValues(data);
 	
 	
@@ -39701,10 +39706,11 @@
 	// Reutrns a function to scale the domain from the data to fit the chart
 	var y0Scale = function y0Scale(props) {
 	  var data = props.data,
+	      style = props.style,
 	      domain = findDomainValues(data);
 	
 	
-	  return d3.scaleBand().domain(domain).rangeRound([props.style.height - props.style.margin.top - props.style.margin.bottom, 0]);
+	  return d3.scaleBand().domain(domain).rangeRound([style.chart.height, 0]);
 	};
 	
 	// Find the Domain Axis Title
@@ -39720,9 +39726,15 @@
 	  return data.seriesTitles[idx];
 	};
 	
+	//Calculates the required bottom margin of chart to fit entire Legend
+	var calculateMarginBottom = function calculateMarginBottom(style, parameters) {
+	  return style.axisMargin.bottom + style.legend.verticalPadding * (Math.floor(parameters.subDomain.length / 3) + 2);
+	};
+	
 	exports.default = function (props) {
 	  var data = props.data,
 	      style = props.style;
+	
 	
 	  var scales = { xScale: xScale(props),
 	    y0Scale: y0Scale(props),
@@ -39732,14 +39744,16 @@
 	    subDomain: findSubDomainValues(data),
 	    range: findRangeValues(data)
 	  };
-	
 	  var translate = "translate(" + style.margin.left + "," + style.margin.top + ")";
+	
+	  var marginBottom = calculateMarginBottom(style, parameters);
+	
+	  style.height = style.margin.top + style.chart.height + marginBottom;
 	
 	  return _react2.default.createElement(
 	    'svg',
 	    { width: style.width,
-	      height: style.height,
-	      style: { outline: "thin solid blue" } },
+	      height: style.height },
 	    _react2.default.createElement(
 	      'g',
 	      { transform: translate },
@@ -39761,6 +39775,77 @@
 /* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Legend = function Legend(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      data = props.data,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters,
+	      subDomain = parameters.subDomain,
+	      chartWidth = style.chart.width,
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	
+	
+	  var legendValues = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 3),
+	        y = style.legend.verticalPadding * Math.floor(i / 3),
+	        width = chartWidth / 4 - 30,
+	        color = colors[i % colors.length],
+	        valueStyle = { fontSize: "20px" };
+	    return _react2.default.createElement(
+	      "text",
+	      { key: i, x: x, y: y, style: valueStyle, textLength: width },
+	      value
+	    );
+	  });
+	
+	  var legendBorders = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 3),
+	        y = style.legend.verticalPadding * Math.floor(i / 3) - 20,
+	        width = chartWidth / 4 - 15,
+	        padding = 10,
+	        color = colors[i % colors.length],
+	        valueStyle = { outline: "thin solid" + color, fontSize: "20px" };
+	
+	    return _react2.default.createElement("rect", { x: x - padding,
+	      y: y,
+	      width: width,
+	      height: 25,
+	      key: i,
+	      stroke: color,
+	      fill: "transparent",
+	      rx: 5,
+	      ry: 5 });
+	  });
+	
+	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 3) + ")";
+	
+	  return _react2.default.createElement(
+	    "g",
+	    { transform: translate },
+	    legendValues,
+	    legendBorders
+	  );
+	};
+	
+	exports.default = Legend;
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -39771,7 +39856,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(216);
+	var _axis = __webpack_require__(217);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -39785,7 +39870,7 @@
 	      style = props.style;
 	
 	
-	  var chartHeight = style.height - style.margin.top - style.margin.bottom;
+	  var chartHeight = style.chart.height;
 	
 	  var xSettings = {
 	    translate: "translate(0," + chartHeight + ")",
@@ -39810,7 +39895,7 @@
 	};
 
 /***/ },
-/* 216 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39884,10 +39969,10 @@
 	
 	      if (this.props.scale.orient === 'bottom') {
 	        x = (style.width - style.margin.left - style.margin.right) / 2;
-	        y = style.height - style.margin.bottom + style.axisMargin.bottom;
+	        y = style.margin.top + style.chart.height + style.axisMargin.bottom;
 	      } else {
 	        x = -style.margin.left + style.axisMargin.left;
-	        y = style.margin.top + (style.height - style.margin.top - style.margin.bottom) / 2;
+	        y = style.margin.top + style.chart.height / 2;
 	        rotate = "rotate(-90," + x + "," + y + ")";
 	      }
 	
@@ -39915,7 +40000,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39928,7 +40013,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rectangles = __webpack_require__(218);
+	var _rectangles = __webpack_require__(219);
 	
 	var _rectangles2 = _interopRequireDefault(_rectangles);
 	
@@ -39967,7 +40052,7 @@
 	exports.default = Group;
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40015,77 +40100,6 @@
 	};
 	
 	exports.default = Rectangles;
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Legend = function Legend(props) {
-	  var scales = props.scales,
-	      style = props.style,
-	      data = props.data,
-	      currentIndex = props.currentIndex,
-	      parameters = props.parameters,
-	      subDomain = parameters.subDomain,
-	      chartWidth = style.width - style.margin.left - style.margin.right,
-	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
-	      legendValueVerticalPadding = 50;
-	
-	
-	  var legendValues = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = legendValueVerticalPadding * Math.floor(i / 3),
-	        color = colors[i % colors.length],
-	        valueStyle = { fontSize: "20px" };
-	    return _react2.default.createElement(
-	      "text",
-	      { key: i, x: x, y: y, style: valueStyle, textLength: 100 },
-	      value
-	    );
-	  });
-	
-	  var legendBorders = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = legendValueVerticalPadding * Math.floor(i / 3) - 20,
-	        width = chartWidth / 4 - 15,
-	        padding = 10,
-	        color = colors[i % colors.length],
-	        valueStyle = { outline: "thin solid" + color, fontSize: "20px" };
-	
-	    return _react2.default.createElement("rect", { x: x - padding,
-	      y: y,
-	      width: width,
-	      height: 25,
-	      key: i,
-	      stroke: color,
-	      fill: "transparent",
-	      rx: 5,
-	      ry: 5 });
-	  });
-	
-	  var translate = "translate( 0," + (style.height - style.margin.top - style.margin.bottom + style.axisMargin.bottom * 3) + ")";
-	
-	  return _react2.default.createElement(
-	    "g",
-	    { transform: translate },
-	    legendValues,
-	    legendBorders
-	  );
-	};
-	
-	exports.default = Legend;
 
 /***/ }
 /******/ ]);

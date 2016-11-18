@@ -36,13 +36,12 @@ class Axis extends React.Component {
 
     if (this.props.scale.orient === 'bottom') {
       x = (style.width - style.margin.left - style.margin.right) / 2;
-      y = (style.height - style.margin.bottom + style.axisMargin.bottom);
+      y = (style.margin.top + style.chart.height + style.axisMargin.bottom);
     }
 
     else {
       x = -style.margin.left + style.axisMargin.left;
-      y = style.margin.top + (style.height - style.margin.top
-          - style.margin.bottom) / 2;
+      y = style.margin.top + (style.chart.height / 2) ;
       rotate = "rotate(-90," + x + "," + y + ")";
     }
 

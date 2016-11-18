@@ -7,8 +7,7 @@ export default (props) => {
 
   const { scales, style } = props;
 
-  var chartHeight = style.height - style.margin.top
-                    - style.margin.bottom;
+  var chartHeight = style.chart.height;
 
   const xSettings = {
     translate: "translate(0," + chartHeight + ")",

@@ -3,17 +3,17 @@ import React from 'react';
 const Legend = (props) => {
   const {scales, style, data, currentIndex, parameters} = props,
         subDomain = parameters.subDomain,
-        chartWidth = style.width - style.margin.left - style.margin.right,
-        colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
-        legendValueVerticalPadding = 50;
+        chartWidth = style.chart.width,
+        colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
 
   const legendValues = subDomain.map((value, i) => {
     let x = (chartWidth / 4) * (i % 3),
-        y =  legendValueVerticalPadding * Math.floor(i / 3),
+        y =  style.legend.verticalPadding * Math.floor(i / 3),
+        width = (chartWidth / 4) - 30,
         color = colors[i % colors.length],
         valueStyle = { fontSize: "20px"};
     return (
-      <text key={i} x={x} y={y} style={valueStyle} textLength={100}>
+      <text key={i} x={x} y={y} style={valueStyle} textLength={width}>
         {value}
       </text>
     );
@@ -21,7 +21,7 @@ const Legend = (props) => {
 
   const legendBorders = subDomain.map((value, i) => {
     let x = (chartWidth / 4) * (i % 3),
-        y =  legendValueVerticalPadding * Math.floor(i / 3) - 20,
+        y =  style.legend.verticalPadding * Math.floor(i / 3) - 20,
         width = (chartWidth / 4) - 15,
         padding = 10,
         color = colors[i % colors.length],
@@ -40,9 +40,9 @@ const Legend = (props) => {
         );
   });
 
-  let translate = "translate( 0,"
-                    + (style.height - style.margin.top
-                      - style.margin.bottom + style.axisMargin.bottom * 3) +  ")";
+  const translate = "translate( 0,"
+                    + (style.chart.height + style.margin.top
+                    + style.axisMargin.bottom * 3) +  ")";
 
   return (
     <g transform={translate}>
