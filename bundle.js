@@ -39662,9 +39662,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line_chart = __webpack_require__(222);
+	var _scatter_plot = __webpack_require__(222);
 	
-	var _line_chart2 = _interopRequireDefault(_line_chart);
+	var _scatter_plot2 = _interopRequireDefault(_scatter_plot);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -39723,9 +39723,9 @@
 	          _react2.default.createElement(
 	            'h1',
 	            null,
-	            'Line Chart'
+	            'Scatter Plot'
 	          ),
-	          _react2.default.createElement(_line_chart2.default, { style: style, data: this.state.data })
+	          _react2.default.createElement(_scatter_plot2.default, { style: style, data: this.state.data })
 	        );
 	      } else {
 	        return _react2.default.createElement(
@@ -40105,12 +40105,13 @@
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis;
+	      var node = this.refs.axis,
+	          axis;
 	
 	      if (this.props.scale.orient === 'bottom') {
-	        var axis = d3.axisBottom(this.props.scale.scale);
+	        axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
-	        var axis = d3.axisLeft(this.props.scale.scale);
+	        axis = d3.axisLeft(this.props.scale.scale);
 	      }
 	
 	      d3.select(node).call(axis);
@@ -40173,9 +40174,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line = __webpack_require__(227);
+	var _circles = __webpack_require__(227);
 	
-	var _line2 = _interopRequireDefault(_line);
+	var _circles2 = _interopRequireDefault(_circles);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -40187,12 +40188,12 @@
 	
 	  var domain = parameters.domain,
 	      series = parameters.subDomain;
-	  var paths = series.map(function (currentValue, index) {
+	  var circles = series.map(function (currentValue, index) {
 	
 	    return _react2.default.createElement(
 	      'g',
 	      { className: 'group', key: index },
-	      _react2.default.createElement(_line2.default, { scales: scales,
+	      _react2.default.createElement(_circles2.default, { scales: scales,
 	        style: style,
 	        data: data,
 	        parameters: parameters,
@@ -40203,7 +40204,7 @@
 	  return _react2.default.createElement(
 	    'g',
 	    null,
-	    paths
+	    circles
 	  );
 	};
 	
@@ -40225,7 +40226,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Line = function Line(props) {
+	var Circles = function Circles(props) {
 	  var scales = props.scales,
 	      style = props.style,
 	      data = props.data,
@@ -40233,32 +40234,27 @@
 	      parameters = props.parameters,
 	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
 	      yValues = data.data[currentIndex + 1],
-	      xValues = parameters.domain;
+	      xValues = parameters.domain,
+	      radius = 5;
 	
 	
-	  var path = "",
-	      color = colors[currentIndex % colors.length];
+	  var color = colors[currentIndex % colors.length];
 	
-	  for (var i = 0; i < xValues.length; i++) {
-	    var pos = undefined,
-	        x = scales.x0Scale(xValues[i]),
+	  var circles = xValues.map(function (xValue, i) {
+	    var x = scales.x0Scale(xValue),
 	        y = scales.yScale(yValues[i]);
-	    if (i === 0) {
-	      pos = "M" + x + "," + y;
-	      path += pos;
-	    } else {
-	      pos = "L" + x + "," + y;
-	      path += pos;
-	    }
-	  }
 	
-	  return _react2.default.createElement("path", { d: path,
-	    fill: 'none',
-	    stroke: color,
-	    strokeWidth: "3" });
+	    return _react2.default.createElement("circle", { cx: x, cy: y, r: radius, fill: color });
+	  });
+	
+	  return _react2.default.createElement(
+	    "g",
+	    null,
+	    circles
+	  );
 	};
 	
-	exports.default = Line;
+	exports.default = Circles;
 
 /***/ }
 /******/ ]);
