@@ -72,26 +72,30 @@ const findMinRangeValue = (data) => {
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (props) => {
   const { data, style } = props;
-  let domain = findDomainValues(data);
+  let domainValues = findDomainValues(data),
+      first = domainValues[0],
+      last = domainValues[domainValues.length - 1],
+      domain = [first, last];
 
+  console.log(domainValues);
   return(
-    d3.scaleBand()
+    d3.scaleLinear()
       .domain(domain)
-      .rangeRound([0, style.chart.width])
+      .range([0, style.chart.width])
   );
 };
 
 // Reutrns a function to scale the subdomain from the data to fit the chart
-const x1Scale = (props) => {
-  const { data } = props,
-        domain = findSubDomainValues(data);
-
-  return(
-    d3.scaleBand()
-      .domain(domain)
-      .rangeRound([0,x0Scale(props).bandwidth()])
-  );
-};
+// const x1Scale = (props) => {
+//   const { data } = props,
+//         domain = findSubDomainValues(data);
+//
+//   return(
+//     d3.scaleBand()
+//       .domain(domain)
+//       .rangeRound([0,x0Scale(props).bandwidth()])
+//   );
+// };
 
 // Returns a function to scale range coordinates from the data to fit the chart
 const yScale = (props) => {
@@ -103,6 +107,7 @@ const yScale = (props) => {
     d3.scaleLinear()
       .range([style.chart.height, 0])
       .domain([minY, maxY])
+
   );
 };
 
@@ -137,7 +142,6 @@ const calculateMarginBottom = (style, parameters) => {
 export default (props) => {
     const { data, style } = props;
     const scales = {  x0Scale : x0Scale(props),
-                      x1Scale : x1Scale(props),
                       yScale: yScale(props),
                       domainAxisTitle: findDomainAxisTitle(data),
                       rangeAxisTitle: findRangeAxisTitle(data)};
