@@ -16,7 +16,7 @@ class Axis extends React.Component {
         axis;
 
     if (this.props.scale.orient === 'bottom') {
-      axis = d3.axisBottom(this.props.scale.scale).tickFormat(d3.format("d"));
+      axis = d3.axisBottom(this.props.scale.scale);
     }
     else if(this.props.scale.orient === 'left') {
       axis = d3.axisLeft(this.props.scale.scale);

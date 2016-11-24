@@ -40095,10 +40095,9 @@
 	
 	  if (data.seriesNames[idx] === 'year') {
 	    return convertToYear(data.data[idx]);
+	  } else if (data.seriesNames[idx] === 'month') {
+	    return convertToMonth(data.data[idx]);
 	  }
-	  // else if (data.seriesNames[idx] === 'month') {
-	  //   return
-	  // }
 	};
 	
 	// Finds the Series Titles For Quantitive Values (SubDomain)
@@ -40155,11 +40154,8 @@
 	  var data = props.data,
 	      style = props.style;
 	
-	  var domainValues = findDomainValues(data),
-	      first = domainValues[0],
-	      last = domainValues[domainValues.length - 1],
-	      domain = [first, last];
-	
+	  var domainValues = findDomainValues(data);
+	  console.log(domainValues);
 	  return d3.scalePoint().domain(domainValues).rangeRound([0, style.chart.width]);
 	};
 	
@@ -40199,7 +40195,20 @@
 	};
 	
 	// Convert Epoch to Standard Time (Month)
-	var convertToMonth = function convertToMonth(domain) {};
+	var convertToMonth = function convertToMonth(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        year = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    year = date.getFullYear().toString();
+	
+	    return month + "/" + year;
+	  });
+	
+	  return newDomain;
+	};
 	
 	// Find the Domain Axis Title
 	var findDomainAxisTitle = function findDomainAxisTitle(data) {
@@ -40430,7 +40439,7 @@
 	          axis;
 	
 	      if (this.props.scale.orient === 'bottom') {
-	        axis = d3.axisBottom(this.props.scale.scale).tickFormat(d3.format("d"));
+	        axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
 	        axis = d3.axisLeft(this.props.scale.scale);
 	      }

@@ -20,9 +20,9 @@ const findDomainValues = (data) => {
   if (data.seriesNames[idx] === 'year') {
     return convertToYear(data.data[idx]);
   }
-  // else if (data.seriesNames[idx] === 'month') {
-  //   return
-  // }
+  else if (data.seriesNames[idx] === 'month') {
+    return convertToMonth(data.data[idx]);
+  }
 
 };
 
@@ -78,11 +78,8 @@ const findMinRangeValue = (data) => {
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (props) => {
   const { data, style } = props;
-  let domainValues = findDomainValues(data),
-      first = domainValues[0],
-      last = domainValues[domainValues.length - 1],
-      domain = [first, last];
-
+  let domainValues = findDomainValues(data);
+  console.log(domainValues);
   return(
     d3.scalePoint()
       .domain(domainValues)
@@ -130,7 +127,18 @@ const convertToYear = (domain) => {
 
 // Convert Epoch to Standard Time (Month)
 const convertToMonth = (domain) => {
+  let newDomain = domain.map( (epoch) => {
+    let date = new Date(0),
+        month,
+        year;
+    date.setUTCSeconds(epoch);
+    month = (date.getMonth() + 1).toString();
+    year = date.getFullYear().toString();
 
+    return month + "/" + year;
+  });
+
+  return newDomain;
 };
 
 // Find the Domain Axis Title
