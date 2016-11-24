@@ -40011,7 +40011,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/md_energy_sales_annual_hdfsform',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/hfac_may2016_paccontribsbydate_hdfs',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -40097,6 +40097,10 @@
 	    return convertToYear(data.data[idx]);
 	  } else if (data.seriesNames[idx] === 'month') {
 	    return convertToMonth(data.data[idx]);
+	  } else if (data.seriesNames[idx] === 'date') {
+	    return convertToDate(data.data[idx]);
+	  } else {
+	    return data.data[idx];
 	  }
 	};
 	
@@ -40187,7 +40191,6 @@
 	  var newDomain = domain.map(function (epoch) {
 	    var date = new Date(0);
 	    date.setUTCSeconds(epoch);
-	    console.log(date.toUTCString());
 	    return date.getFullYear();
 	  });
 	
@@ -40205,6 +40208,22 @@
 	    year = date.getFullYear().toString();
 	
 	    return month + "/" + year;
+	  });
+	
+	  return newDomain;
+	};
+	
+	// Convert Epoch to Standard Time (date)
+	var convertToDate = function convertToDate(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        day = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    day = date.getDate().toString();
+	
+	    return month + "/" + day;
 	  });
 	
 	  return newDomain;

@@ -23,6 +23,12 @@ const findDomainValues = (data) => {
   else if (data.seriesNames[idx] === 'month') {
     return convertToMonth(data.data[idx]);
   }
+  else if(data.seriesNames[idx] === 'date') {
+    return convertToDate(data.data[idx]);
+  }
+  else {
+    return data.data[idx];
+  }
 
 };
 
@@ -118,7 +124,6 @@ const convertToYear = (domain) => {
   let newDomain = domain.map( (epoch) => {
     let date = new Date(0);
     date.setUTCSeconds(epoch);
-    console.log(date.toUTCString());
     return date.getFullYear();
   });
 
@@ -136,6 +141,22 @@ const convertToMonth = (domain) => {
     year = date.getFullYear().toString();
 
     return month + "/" + year;
+  });
+
+  return newDomain;
+};
+
+// Convert Epoch to Standard Time (date)
+const convertToDate = (domain) => {
+  let newDomain = domain.map( (epoch) => {
+    let date = new Date(0),
+        month,
+        day;
+    date.setUTCSeconds(epoch);
+    month = (date.getMonth() + 1).toString();
+    day = date.getDate().toString();
+
+    return month + "/" + day;
   });
 
   return newDomain;
