@@ -23,7 +23,7 @@ class Chart extends React.Component {
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/homeownervacancyrate_1965_2015_hdfsformat',
+      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/md_energy_sales_annual_hdfsform',
       success: function(response) {
         this.setState({data: response});
       }.bind(this),

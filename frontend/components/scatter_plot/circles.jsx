@@ -14,7 +14,7 @@ const Circles = (props) => {
         y = scales.yScale(yValues[i]);
 
     return (
-      <circle cx={x} cy={y} r={radius} fill={color}/>
+      <circle cx={x} cy={y} r={radius} fill={color} key={i}/>
     );
   });
 

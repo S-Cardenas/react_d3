@@ -17,7 +17,13 @@ const findDomainValues = (data) => {
     }
   });
 
-  return convertToYear(data.data[idx]);
+  if (data.seriesNames[idx] === 'year') {
+    return convertToYear(data.data[idx]);
+  }
+  // else if (data.seriesNames[idx] === 'month') {
+  //   return
+  // }
+
 };
 
 // Finds the Series Titles For Quantitive Values (SubDomain)
@@ -77,11 +83,10 @@ const x0Scale = (props) => {
       last = domainValues[domainValues.length - 1],
       domain = [first, last];
 
-  console.log(domainValues);
   return(
-    d3.scaleLinear()
-      .domain(domain)
-      .range([0, style.chart.width])
+    d3.scalePoint()
+      .domain(domainValues)
+      .rangeRound([0, style.chart.width])
   );
 };
 
@@ -116,10 +121,16 @@ const convertToYear = (domain) => {
   let newDomain = domain.map( (epoch) => {
     let date = new Date(0);
     date.setUTCSeconds(epoch);
+    console.log(date.toUTCString());
     return date.getFullYear();
   });
 
   return newDomain;
+};
+
+// Convert Epoch to Standard Time (Month)
+const convertToMonth = (domain) => {
+
 };
 
 // Find the Domain Axis Title
