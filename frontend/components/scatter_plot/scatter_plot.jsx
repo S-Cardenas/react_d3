@@ -85,7 +85,6 @@ const findMinRangeValue = (data) => {
 const x0Scale = (props) => {
   const { data, style } = props;
   let domainValues = findDomainValues(data);
-  console.log(domainValues);
   return(
     d3.scalePoint()
       .domain(domainValues)

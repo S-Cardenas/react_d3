@@ -7,8 +7,8 @@ const Legend = (props) => {
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
 
   const legendValues = subDomain.map((value, i) => {
-    let x = (chartWidth / 4) * (i % 3),
-        y =  style.legend.verticalPadding * Math.floor(i / 3),
+    let x = (chartWidth / 4) * (i % 4),
+        y =  style.legend.verticalPadding * Math.floor(i / 4),
         width = (chartWidth / 4) - 30,
         color = colors[i % colors.length],
         valueStyle = { fontSize: "20px"};
@@ -20,8 +20,8 @@ const Legend = (props) => {
   });
 
   const legendBorders = subDomain.map((value, i) => {
-    let x = (chartWidth / 4) * (i % 3),
-        y =  style.legend.verticalPadding * Math.floor(i / 3) - 20,
+    let x = (chartWidth / 4) * (i % 4),
+        y =  style.legend.verticalPadding * Math.floor(i / 4) - 20,
         width = (chartWidth / 4) - 15,
         padding = 10,
         color = colors[i % colors.length],

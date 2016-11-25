@@ -23256,8 +23256,8 @@
 	
 	
 	  var legendValues = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = style.legend.verticalPadding * Math.floor(i / 3),
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4),
 	        width = chartWidth / 4 - 30,
 	        color = colors[i % colors.length],
 	        valueStyle = { fontSize: "20px" };
@@ -23269,8 +23269,8 @@
 	  });
 	
 	  var legendBorders = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = style.legend.verticalPadding * Math.floor(i / 3) - 20,
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4) - 20,
 	        width = chartWidth / 4 - 15,
 	        padding = 10,
 	        color = colors[i % colors.length],
@@ -40011,7 +40011,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/hfac_may2016_paccontribsbydate_hdfs',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/fatal_police_shootings_by_month_012015_072016_hdfsformat',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -40159,7 +40159,6 @@
 	      style = props.style;
 	
 	  var domainValues = findDomainValues(data);
-	  console.log(domainValues);
 	  return d3.scalePoint().domain(domainValues).rangeRound([0, style.chart.width]);
 	};
 	
@@ -40312,8 +40311,8 @@
 	
 	
 	  var legendValues = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = style.legend.verticalPadding * Math.floor(i / 3),
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4),
 	        width = chartWidth / 4 - 30,
 	        color = colors[i % colors.length],
 	        valueStyle = { fontSize: "20px" };
@@ -40325,8 +40324,8 @@
 	  });
 	
 	  var legendBorders = subDomain.map(function (value, i) {
-	    var x = chartWidth / 4 * (i % 3),
-	        y = style.legend.verticalPadding * Math.floor(i / 3) - 20,
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4) - 20,
 	        width = chartWidth / 4 - 15,
 	        padding = 10,
 	        color = colors[i % colors.length],
