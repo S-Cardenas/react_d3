@@ -42,7 +42,7 @@ const Legend = (props) => {
 
   const translate = "translate( 0,"
                     + (style.chart.height + style.margin.top
-                    + style.axisMargin.bottom * 3) +  ")";
+                    + style.axisMargin.bottom * 2) +  ")";
 
   return (
     <g className={"legend"}transform={translate}>

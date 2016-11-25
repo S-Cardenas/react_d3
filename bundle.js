@@ -23287,7 +23287,7 @@
 	      ry: 5 });
 	  });
 	
-	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 3) + ")";
+	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 2) + ")";
 	
 	  return _react2.default.createElement(
 	    "g",
@@ -39986,7 +39986,7 @@
 	  svgHeight: 730,
 	  chart: { height: 450, width: 1000 },
 	  margin: { top: 20, right: 20, bottom: 260, left: 150 },
-	  axisMargin: { bottom: 25, left: 25 },
+	  axisMargin: { bottom: 55, left: 25 },
 	  legend: { verticalPadding: 50 }
 	};
 	
@@ -40342,7 +40342,7 @@
 	      ry: 5 });
 	  });
 	
-	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 3) + ")";
+	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 2) + ")";
 	
 	  return _react2.default.createElement(
 	    "g",
