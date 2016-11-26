@@ -2,7 +2,7 @@ import React from 'react';
 import ScatterPlot from './scatter_plot';
 
 // Scale Factor for Chart
-const sF = 1;
+const sF = 0.5;
 
 // Chart Dimensions
 const style = {
@@ -11,7 +11,8 @@ const style = {
   chart : {height: 450 * sF, width: 1000 * sF},
   margin : {top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF},
   axisMargin : {bottom: 55 * sF, left: 25 * sF},
-  legend: {verticalPadding: 50 * sF}
+  legend: {verticalPadding: 50 * sF},
+  sF: sF
 };
 
 var data;

@@ -40000,7 +40000,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	// Scale Factor for Chart
-	var sF = 1;
+	var sF = 0.5;
 	
 	// Chart Dimensions
 	var style = {
@@ -40009,7 +40009,8 @@
 	  chart: { height: 450 * sF, width: 1000 * sF },
 	  margin: { top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF },
 	  axisMargin: { bottom: 55 * sF, left: 25 * sF },
-	  legend: { verticalPadding: 50 * sF }
+	  legend: { verticalPadding: 50 * sF },
+	  sF: sF
 	};
 	
 	var data;
@@ -40605,7 +40606,7 @@
 	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
 	      yValues = data.data[currentIndex + 1],
 	      xValues = parameters.domain,
-	      radius = 5;
+	      radius = 5 * style.sF;
 	
 	
 	  var color = colors[currentIndex % colors.length];

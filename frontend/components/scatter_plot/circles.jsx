@@ -5,8 +5,8 @@ const Circles = (props) => {
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
         yValues = data.data[currentIndex + 1],
         xValues = parameters.domain,
-        radius = 5;
-
+        radius = 5 * style.sF;
+  
   let color = colors[currentIndex % colors.length];
 
   let circles = xValues.map( (xValue, i) => {
