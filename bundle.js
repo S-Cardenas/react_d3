@@ -62,7 +62,7 @@
 	
 	var _chart2 = _interopRequireDefault(_chart);
 	
-	var _chart3 = __webpack_require__(219);
+	var _chart3 = __webpack_require__(226);
 	
 	var _chart4 = _interopRequireDefault(_chart3);
 	
@@ -39958,7 +39958,14 @@
 	exports.default = Rectangles;
 
 /***/ },
-/* 219 */
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39973,9 +39980,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _bar_chart = __webpack_require__(220);
+	var _line_chart = __webpack_require__(227);
 	
-	var _bar_chart2 = _interopRequireDefault(_bar_chart);
+	var _line_chart2 = _interopRequireDefault(_line_chart);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -40019,7 +40026,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/how_often_talk_about_economy_hdfsformat',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/federal_hate_crime_statistics_2006_2014_single_bias_incidents_hdfsformat',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -40038,9 +40045,9 @@
 	          _react2.default.createElement(
 	            'h1',
 	            null,
-	            'Grouped Bar Chart'
+	            'Line Chart'
 	          ),
-	          _react2.default.createElement(_bar_chart2.default, { style: style, data: this.state.data })
+	          _react2.default.createElement(_line_chart2.default, { style: style, data: this.state.data })
 	        );
 	      } else {
 	        return _react2.default.createElement(
@@ -40058,7 +40065,7 @@
 	exports.default = Chart;
 
 /***/ },
-/* 220 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40071,15 +40078,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(221);
+	var _legend = __webpack_require__(228);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(222);
+	var _x_y_axis = __webpack_require__(229);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(224);
+	var _group = __webpack_require__(231);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -40101,7 +40108,7 @@
 	    }
 	  });
 	
-	  return data.data[idx];
+	  return convertToYear(data.data[idx]);
 	};
 	
 	// Finds the Series Titles For Quantitive Values (SubDomain)
@@ -40144,34 +40151,54 @@
 	  return Math.max.apply(Math, yValues);
 	};
 	
-	// Returns a function to scale the range from the data to fit the chart
-	var xScale = function xScale(props) {
-	  var data = props.data,
-	      style = props.style,
-	      maxY = findMaxRangeValue(data);
+	// Find the minimum Y value of the input data (Min Range Value)
+	var findMinRangeValue = function findMinRangeValue(data) {
+	  var yValues = findRangeValues(data).reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
 	
-	
-	  return d3.scaleLinear().range([0, style.chart.width]).domain([0, maxY]);
+	  return Math.min.apply(Math, yValues);
 	};
 	
-	// Returnsns a function to scale the subdomain from the data to fit the chart
-	var y1Scale = function y1Scale(props) {
+	// Returns a function that scales domain from the data to fit the chart
+	var x0Scale = function x0Scale(props) {
 	  var data = props.data,
-	      style = props.style,
+	      style = props.style;
+	
+	  var domain = findDomainValues(data);
+	
+	  return d3.scaleBand().domain(domain).rangeRound([0, style.chart.width]);
+	};
+	
+	// Reutrns a function to scale the subdomain from the data to fit the chart
+	var x1Scale = function x1Scale(props) {
+	  var data = props.data,
 	      domain = findSubDomainValues(data);
 	
 	
-	  return d3.scaleBand().domain(domain).rangeRound([0, y0Scale(props).bandwidth()]);
+	  return d3.scaleBand().domain(domain).rangeRound([0, x0Scale(props).bandwidth()]);
 	};
 	
-	// Reutrns a function to scale the domain from the data to fit the chart
-	var y0Scale = function y0Scale(props) {
+	// Returns a function to scale range coordinates from the data to fit the chart
+	var yScale = function yScale(props) {
 	  var data = props.data,
 	      style = props.style,
-	      domain = findDomainValues(data);
+	      maxY = findMaxRangeValue(data),
+	      minY = findMinRangeValue(data);
 	
 	
-	  return d3.scaleBand().domain(domain).rangeRound([style.chart.height, 0]);
+	  return d3.scaleLinear().range([style.chart.height, 0]).domain([minY, maxY]);
+	};
+	
+	// Convert Epoch to Standard Time (Year)
+	var convertToYear = function convertToYear(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0);
+	    date.setUTCSeconds(epoch);
+	    return date.getFullYear();
+	  });
+	
+	  return newDomain;
 	};
 	
 	// Find the Domain Axis Title
@@ -40193,17 +40220,17 @@
 	  var data = props.data,
 	      style = props.style;
 	
-	
-	  var scales = { xScale: xScale(props),
-	    y0Scale: y0Scale(props),
-	    y1Scale: y1Scale(props),
+	  var scales = { x0Scale: x0Scale(props),
+	    x1Scale: x1Scale(props),
+	    yScale: yScale(props),
 	    domainAxisTitle: findDomainAxisTitle(data),
 	    rangeAxisTitle: findRangeAxisTitle(data) };
 	  var parameters = { domain: findDomainValues(data),
 	    subDomain: findSubDomainValues(data),
 	    range: findRangeValues(data)
 	  };
-	  var translate = "translate(" + style.margin.left + "," + style.margin.top + ")";
+	
+	  var translate = "translate(" + style.margin.left + "," + style.margin.right + ")";
 	
 	  var marginBottom = calculateMarginBottom(style, parameters);
 	
@@ -40231,7 +40258,7 @@
 	};
 
 /***/ },
-/* 221 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40293,7 +40320,7 @@
 	
 	  return _react2.default.createElement(
 	    "g",
-	    { transform: translate },
+	    { className: "legend", transform: translate },
 	    legendValues,
 	    legendBorders
 	  );
@@ -40302,7 +40329,7 @@
 	exports.default = Legend;
 
 /***/ },
-/* 222 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40315,7 +40342,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(223);
+	var _axis = __webpack_require__(230);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -40328,21 +40355,20 @@
 	  var scales = props.scales,
 	      style = props.style;
 	
-	
 	  var chartHeight = style.chart.height;
 	
 	  var xSettings = {
 	    translate: "translate(0," + chartHeight + ")",
-	    scale: scales.xScale,
+	    scale: scales.x0Scale,
 	    orient: 'bottom',
-	    title: scales.rangeAxisTitle
+	    title: scales.domainAxisTitle
 	  };
 	
 	  var ySettings = {
 	    translate: "translate(0,0)",
-	    scale: scales.y0Scale,
+	    scale: scales.yScale,
 	    orient: 'left',
-	    title: scales.domainAxisTitle
+	    title: scales.rangeAxisTitle
 	  };
 	
 	  return _react2.default.createElement(
@@ -40354,7 +40380,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40456,7 +40482,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 224 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40469,9 +40495,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rectangles = __webpack_require__(225);
+	var _line = __webpack_require__(232);
 	
-	var _rectangles2 = _interopRequireDefault(_rectangles);
+	var _line2 = _interopRequireDefault(_line);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -40481,16 +40507,14 @@
 	      data = props.data,
 	      parameters = props.parameters;
 	
-	  var domain = parameters.domain;
-	  var groups = domain.map(function (currentValue, index) {
-	    var yPos = scales.y0Scale(currentValue),
-	        translate = "translate(0," + yPos + ")";
+	  var domain = parameters.domain,
+	      series = parameters.subDomain;
+	  var paths = series.map(function (currentValue, index) {
 	
 	    return _react2.default.createElement(
 	      'g',
-	      { className: 'group', key: index, transform: translate },
-	      _react2.default.createElement(_rectangles2.default, {
-	        scales: scales,
+	      { className: 'group', key: index },
+	      _react2.default.createElement(_line2.default, { scales: scales,
 	        style: style,
 	        data: data,
 	        parameters: parameters,
@@ -40501,14 +40525,14 @@
 	  return _react2.default.createElement(
 	    'g',
 	    null,
-	    groups
+	    paths
 	  );
 	};
 	
 	exports.default = Group;
 
 /***/ },
-/* 225 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40523,39 +40547,40 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Rectangles = function Rectangles(props) {
+	var Line = function Line(props) {
 	  var scales = props.scales,
 	      style = props.style,
 	      data = props.data,
 	      currentIndex = props.currentIndex,
-	      parameters = props.parameters;
+	      parameters = props.parameters,
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
+	      yValues = data.data[currentIndex + 1],
+	      xValues = parameters.domain;
 	
-	  var series = parameters.subDomain,
-	      xData = parameters.range,
-	      chartWidth = style.chart.width,
-	      barWidth = scales.y1Scale.bandwidth(),
-	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
 	
-	  var rectangles = series.map(function (currentValue, i) {
-	    var yPos = scales.y1Scale(currentValue),
-	        xPos = scales.xScale(xData[i][currentIndex]),
-	        color = colors[i % colors.length];
-	    return _react2.default.createElement("rect", { x: 0,
-	      y: yPos,
-	      width: xPos,
-	      height: barWidth,
-	      key: i,
-	      fill: color });
-	  });
+	  var path = "",
+	      color = colors[currentIndex % colors.length];
 	
-	  return _react2.default.createElement(
-	    "g",
-	    null,
-	    rectangles
-	  );
+	  for (var i = 0; i < xValues.length; i++) {
+	    var pos = undefined,
+	        x = scales.x0Scale(xValues[i]),
+	        y = scales.yScale(yValues[i]);
+	    if (i === 0) {
+	      pos = "M" + x + "," + y;
+	      path += pos;
+	    } else {
+	      pos = "L" + x + "," + y;
+	      path += pos;
+	    }
+	  }
+	
+	  return _react2.default.createElement("path", { d: path,
+	    fill: 'none',
+	    stroke: color,
+	    strokeWidth: "3" });
 	};
 	
-	exports.default = Rectangles;
+	exports.default = Line;
 
 /***/ }
 /******/ ]);
