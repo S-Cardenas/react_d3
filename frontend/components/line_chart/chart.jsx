@@ -2,7 +2,7 @@ import React from 'react';
 import LineChart from './line_chart';
 
 // Scale Factor for Chart
-const sF = 0.5;
+const sF = 1;
 
 // Chart Dimensions
 const style = {

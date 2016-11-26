@@ -40439,7 +40439,9 @@
 	      var x = void 0,
 	          y = void 0,
 	          rotate = void 0,
-	          title = void 0;
+	          title = void 0,
+	          textHeight = 20 * style.sF,
+	          valueStyle = { fontSize: textHeight + "px" };
 	
 	      if (this.props.scale.orient === 'bottom') {
 	        x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
@@ -40461,6 +40463,7 @@
 	          { textAnchor: "middle",
 	            x: x,
 	            y: y,
+	            style: valueStyle,
 	            transform: rotate },
 	          title
 	        )
