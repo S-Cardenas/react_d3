@@ -62,7 +62,7 @@
 	
 	var _chart2 = _interopRequireDefault(_chart);
 	
-	var _chart3 = __webpack_require__(226);
+	var _chart3 = __webpack_require__(219);
 	
 	var _chart4 = _interopRequireDefault(_chart3);
 	
@@ -39958,14 +39958,7 @@
 	exports.default = Rectangles;
 
 /***/ },
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39980,7 +39973,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line_chart = __webpack_require__(227);
+	var _line_chart = __webpack_require__(220);
 	
 	var _line_chart2 = _interopRequireDefault(_line_chart);
 	
@@ -39993,7 +39986,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	// Scale Factor for Chart
-	var sF = 1;
+	var sF = 0.5;
 	
 	// Chart Dimensions
 	var style = {
@@ -40066,7 +40059,7 @@
 	exports.default = Chart;
 
 /***/ },
-/* 227 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40079,15 +40072,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(228);
+	var _legend = __webpack_require__(221);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(229);
+	var _x_y_axis = __webpack_require__(222);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(231);
+	var _group = __webpack_require__(224);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -40259,7 +40252,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40282,7 +40275,8 @@
 	      parameters = props.parameters,
 	      subDomain = parameters.subDomain,
 	      chartWidth = style.chart.width,
-	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
+	      textHeight = 20 * style.sF;
 	
 	
 	  var legendValues = subDomain.map(function (value, i) {
@@ -40290,7 +40284,7 @@
 	        y = style.legend.verticalPadding * Math.floor(i / 4),
 	        width = chartWidth / 4 - 30,
 	        color = colors[i % colors.length],
-	        valueStyle = { fontSize: "20px" };
+	        valueStyle = { fontSize: textHeight + "px" };
 	    return _react2.default.createElement(
 	      "text",
 	      { key: i, x: x, y: y, style: valueStyle, textLength: width },
@@ -40330,7 +40324,7 @@
 	exports.default = Legend;
 
 /***/ },
-/* 229 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40343,7 +40337,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(230);
+	var _axis = __webpack_require__(223);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -40381,7 +40375,7 @@
 	};
 
 /***/ },
-/* 230 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40483,7 +40477,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 231 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40496,7 +40490,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line = __webpack_require__(232);
+	var _line = __webpack_require__(225);
 	
 	var _line2 = _interopRequireDefault(_line);
 	
@@ -40533,7 +40527,7 @@
 	exports.default = Group;
 
 /***/ },
-/* 232 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
