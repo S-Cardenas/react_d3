@@ -22984,13 +22984,17 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	// Scale Factor for Chart
+	var sF = 0.5;
+	
+	// Chart Dimensions
 	var style = {
-	  svgWidth: 1170,
-	  svgHeight: 730,
-	  chart: { height: 450, width: 1000 },
-	  margin: { top: 20, right: 20, bottom: 260, left: 150 },
-	  axisMargin: { bottom: 55, left: 25 },
-	  legend: { verticalPadding: 50 }
+	  svgWidth: 1170 * sF,
+	  svgHeight: 730 * sF,
+	  chart: { height: 450 * sF, width: 1000 * sF },
+	  margin: { top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF },
+	  axisMargin: { bottom: 55 * sF, left: 25 * sF },
+	  legend: { verticalPadding: 50 * sF }
 	};
 	
 	var data;
