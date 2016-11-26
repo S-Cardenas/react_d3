@@ -3,7 +3,7 @@ import BarChart from './bar_chart';
 
 
 // Scale Factor for Chart
-const sF = 1;
+const sF = 0.5;
 
 // Chart Dimensions
 const style = {
