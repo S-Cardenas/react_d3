@@ -40294,7 +40294,7 @@
 	
 	  var legendBorders = subDomain.map(function (value, i) {
 	    var x = chartWidth / 4 * (i % 4),
-	        y = style.legend.verticalPadding * Math.floor(i / 4) - 20,
+	        y = style.legend.verticalPadding * Math.floor(i / 4) - 20 * style.sF,
 	        width = chartWidth / 4 - 15,
 	        padding = 10,
 	        color = colors[i % colors.length],
@@ -40303,7 +40303,7 @@
 	    return _react2.default.createElement("rect", { x: x - padding,
 	      y: y,
 	      width: width,
-	      height: 25,
+	      height: 25 * style.sF,
 	      key: i,
 	      stroke: color,
 	      fill: "transparent",
