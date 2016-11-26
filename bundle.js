@@ -62,7 +62,7 @@
 	
 	var _chart2 = _interopRequireDefault(_chart);
 	
-	var _chart3 = __webpack_require__(219);
+	var _chart3 = __webpack_require__(226);
 	
 	var _chart4 = _interopRequireDefault(_chart3);
 	
@@ -39963,7 +39963,14 @@
 	exports.default = Rectangles;
 
 /***/ },
-/* 219 */
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39978,9 +39985,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line_chart = __webpack_require__(220);
+	var _scatter_plot = __webpack_require__(227);
 	
-	var _line_chart2 = _interopRequireDefault(_line_chart);
+	var _scatter_plot2 = _interopRequireDefault(_scatter_plot);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -40025,7 +40032,7 @@
 	    value: function componentDidMount() {
 	      $.ajax({
 	        type: 'GET',
-	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/federal_hate_crime_statistics_2006_2014_single_bias_incidents_hdfsformat',
+	        url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/fatal_police_shootings_by_month_012015_072016_hdfsformat',
 	        success: function (response) {
 	          this.setState({ data: response });
 	        }.bind(this),
@@ -40044,9 +40051,9 @@
 	          _react2.default.createElement(
 	            'h1',
 	            null,
-	            'Line Chart'
+	            'Scatter Plot'
 	          ),
-	          _react2.default.createElement(_line_chart2.default, { style: style, data: this.state.data })
+	          _react2.default.createElement(_scatter_plot2.default, { style: style, data: this.state.data })
 	        );
 	      } else {
 	        return _react2.default.createElement(
@@ -40064,7 +40071,7 @@
 	exports.default = Chart;
 
 /***/ },
-/* 220 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40077,15 +40084,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(221);
+	var _legend = __webpack_require__(228);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(222);
+	var _x_y_axis = __webpack_require__(229);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(224);
+	var _group = __webpack_require__(231);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -40107,7 +40114,15 @@
 	    }
 	  });
 	
-	  return convertToYear(data.data[idx]);
+	  if (data.seriesNames[idx] === 'year') {
+	    return convertToYear(data.data[idx]);
+	  } else if (data.seriesNames[idx] === 'month') {
+	    return convertToMonth(data.data[idx]);
+	  } else if (data.seriesNames[idx] === 'date') {
+	    return convertToDate(data.data[idx]);
+	  } else {
+	    return data.data[idx];
+	  }
 	};
 	
 	// Finds the Series Titles For Quantitive Values (SubDomain)
@@ -40164,19 +40179,21 @@
 	  var data = props.data,
 	      style = props.style;
 	
-	  var domain = findDomainValues(data);
-	
-	  return d3.scaleBand().domain(domain).rangeRound([0, style.chart.width]);
+	  var domainValues = findDomainValues(data);
+	  return d3.scalePoint().domain(domainValues).rangeRound([0, style.chart.width]);
 	};
 	
 	// Reutrns a function to scale the subdomain from the data to fit the chart
-	var x1Scale = function x1Scale(props) {
-	  var data = props.data,
-	      domain = findSubDomainValues(data);
-	
-	
-	  return d3.scaleBand().domain(domain).rangeRound([0, x0Scale(props).bandwidth()]);
-	};
+	// const x1Scale = (props) => {
+	//   const { data } = props,
+	//         domain = findSubDomainValues(data);
+	//
+	//   return(
+	//     d3.scaleBand()
+	//       .domain(domain)
+	//       .rangeRound([0,x0Scale(props).bandwidth()])
+	//   );
+	// };
 	
 	// Returns a function to scale range coordinates from the data to fit the chart
 	var yScale = function yScale(props) {
@@ -40195,6 +40212,38 @@
 	    var date = new Date(0);
 	    date.setUTCSeconds(epoch);
 	    return date.getFullYear();
+	  });
+	
+	  return newDomain;
+	};
+	
+	// Convert Epoch to Standard Time (Month)
+	var convertToMonth = function convertToMonth(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        year = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    year = date.getFullYear().toString();
+	
+	    return month + "/" + year;
+	  });
+	
+	  return newDomain;
+	};
+	
+	// Convert Epoch to Standard Time (date)
+	var convertToDate = function convertToDate(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        day = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    day = date.getDate().toString();
+	
+	    return month + "/" + day;
 	  });
 	
 	  return newDomain;
@@ -40220,7 +40269,6 @@
 	      style = props.style;
 	
 	  var scales = { x0Scale: x0Scale(props),
-	    x1Scale: x1Scale(props),
 	    yScale: yScale(props),
 	    domainAxisTitle: findDomainAxisTitle(data),
 	    rangeAxisTitle: findRangeAxisTitle(data) };
@@ -40257,7 +40305,7 @@
 	};
 
 /***/ },
-/* 221 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40329,7 +40377,7 @@
 	exports.default = Legend;
 
 /***/ },
-/* 222 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40342,7 +40390,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(223);
+	var _axis = __webpack_require__(230);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -40380,7 +40428,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40427,12 +40475,13 @@
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis;
+	      var node = this.refs.axis,
+	          axis;
 	
 	      if (this.props.scale.orient === 'bottom') {
-	        var axis = d3.axisBottom(this.props.scale.scale);
+	        axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
-	        var axis = d3.axisLeft(this.props.scale.scale);
+	        axis = d3.axisLeft(this.props.scale.scale);
 	      }
 	
 	      d3.select(node).call(axis);
@@ -40485,7 +40534,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 224 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40498,9 +40547,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _line = __webpack_require__(225);
+	var _circles = __webpack_require__(232);
 	
-	var _line2 = _interopRequireDefault(_line);
+	var _circles2 = _interopRequireDefault(_circles);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -40512,12 +40561,12 @@
 	
 	  var domain = parameters.domain,
 	      series = parameters.subDomain;
-	  var paths = series.map(function (currentValue, index) {
+	  var circles = series.map(function (currentValue, index) {
 	
 	    return _react2.default.createElement(
 	      'g',
 	      { className: 'group', key: index },
-	      _react2.default.createElement(_line2.default, { scales: scales,
+	      _react2.default.createElement(_circles2.default, { scales: scales,
 	        style: style,
 	        data: data,
 	        parameters: parameters,
@@ -40528,14 +40577,14 @@
 	  return _react2.default.createElement(
 	    'g',
 	    null,
-	    paths
+	    circles
 	  );
 	};
 	
 	exports.default = Group;
 
 /***/ },
-/* 225 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40550,7 +40599,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Line = function Line(props) {
+	var Circles = function Circles(props) {
 	  var scales = props.scales,
 	      style = props.style,
 	      data = props.data,
@@ -40559,32 +40608,26 @@
 	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
 	      yValues = data.data[currentIndex + 1],
 	      xValues = parameters.domain,
-	      lineThickness = 3 * style.sF;
+	      radius = 5 * style.sF;
 	
 	
-	  var path = "",
-	      color = colors[currentIndex % colors.length];
+	  var color = colors[currentIndex % colors.length];
 	
-	  for (var i = 0; i < xValues.length; i++) {
-	    var pos = undefined,
-	        x = scales.x0Scale(xValues[i]),
+	  var circles = xValues.map(function (xValue, i) {
+	    var x = scales.x0Scale(xValue),
 	        y = scales.yScale(yValues[i]);
-	    if (i === 0) {
-	      pos = "M" + x + "," + y;
-	      path += pos;
-	    } else {
-	      pos = "L" + x + "," + y;
-	      path += pos;
-	    }
-	  }
 	
-	  return _react2.default.createElement("path", { d: path,
-	    fill: 'none',
-	    stroke: color,
-	    strokeWidth: lineThickness });
+	    return _react2.default.createElement("circle", { cx: x, cy: y, r: radius, fill: color, key: i });
+	  });
+	
+	  return _react2.default.createElement(
+	    "g",
+	    null,
+	    circles
+	  );
 	};
 	
-	exports.default = Line;
+	exports.default = Circles;
 
 /***/ }
 /******/ ]);

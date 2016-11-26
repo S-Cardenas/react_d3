@@ -30,7 +30,9 @@ class Axis extends React.Component {
     let x,
         y,
         rotate,
-        title;
+        title,
+        textHeight = 20 * style.sF,
+        valueStyle = { fontSize: textHeight + "px"};
 
     if (this.props.scale.orient === 'bottom') {
       x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
@@ -52,6 +54,7 @@ class Axis extends React.Component {
         <text textAnchor={"middle"}
               x={x}
               y={y}
+              style={valueStyle}
               transform={rotate}>
           {title}
         </text>
