@@ -1,13 +1,17 @@
 import React from 'react';
 import BarChart from './bar_chart';
 
+// Scale Factor for Chart
+const sF = 1;
+
+// Chart Dimensions
 const style = {
-  svgWidth   : 1170,
-  svgHeight  : 730,
-  chart : {height: 450, width: 1000},
-  margin : {top: 20, right: 20, bottom: 260, left: 150},
-  axisMargin : {bottom: 25, left: 25},
-  legend: {verticalPadding: 50}
+  svgWidth : 1170 * sF,
+  svgHeight : 730 * sF,
+  chart : {height: 450 * sF, width: 1000 * sF},
+  margin : {top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF},
+  axisMargin : {bottom: 55 * sF, left: 25 * sF},
+  legend: {verticalPadding: 50 * sF}
 };
 
 var data;
