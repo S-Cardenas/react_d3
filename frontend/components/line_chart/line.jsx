@@ -4,7 +4,8 @@ const Line = (props) => {
   const {scales, style, data, currentIndex, parameters} = props,
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
         yValues = data.data[currentIndex + 1],
-        xValues = parameters.domain;
+        xValues = parameters.domain,
+        lineThickness = 3 * style.sF;
 
   let path = "",
       color = colors[currentIndex % colors.length];
@@ -28,7 +29,7 @@ const Line = (props) => {
     <path d={path}
           fill={'none'}
           stroke={color}
-          strokeWidth="3"/>
+          strokeWidth={lineThickness}/>
   );
 };
 
