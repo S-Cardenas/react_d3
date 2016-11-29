@@ -40490,8 +40490,10 @@
 	          y = void 0,
 	          rotate = void 0,
 	          title = void 0,
-	          textHeight = 20 * style.sF,
-	          valueStyle = { fontSize: textHeight + "px" };
+	          axisLabelFontSize = 20 * style.sF,
+	          axisTickFontSize = 10 * style.sF,
+	          axisLabelValueStyle = { fontSize: axisLabelFontSize + "px" },
+	          axisTickValueStyle = { fontSize: axisTickFontSize + "px" };
 	
 	      if (this.props.scale.orient === 'bottom') {
 	        x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
@@ -40507,13 +40509,16 @@
 	      return _react2.default.createElement(
 	        'g',
 	        null,
-	        _react2.default.createElement('g', { className: 'axis', ref: 'axis', transform: scale.translate }),
+	        _react2.default.createElement('g', { className: 'axis',
+	          ref: 'axis',
+	          transform: scale.translate,
+	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
 	          'text',
 	          { textAnchor: "middle",
 	            x: x,
 	            y: y,
-	            style: valueStyle,
+	            style: axisLabelValueStyle,
 	            transform: rotate },
 	          title
 	        )
