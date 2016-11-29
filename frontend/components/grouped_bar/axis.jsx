@@ -30,8 +30,10 @@ class Axis extends React.Component {
         y,
         rotate,
         title,
-        textHeight = 20 * style.sF,
-        valueStyle = { fontSize: textHeight + "px"};
+        axisLabelFontSize = 20 * style.sF,
+        axisTickFontSize = 10 * style.sF,
+        axisLabelValueStyle = { fontSize: axisLabelFontSize + "px"},
+        axisTickValueStyle = { fontSize: axisTickFontSize + "px"};
 
     if (this.props.scale.orient === 'bottom') {
       x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
@@ -49,11 +51,16 @@ class Axis extends React.Component {
 
     return (
       <g>
-        <g className="axis" ref="axis" transform={scale.translate}></g>
+        <g className="axis"
+           ref="axis"
+           transform={scale.translate}
+           style={axisTickValueStyle}>
+
+        </g>
         <text textAnchor={"middle"}
               x={x}
               y={y}
-              style={valueStyle}
+              style={axisLabelValueStyle}
               transform={rotate}>
           {title}
         </text>
