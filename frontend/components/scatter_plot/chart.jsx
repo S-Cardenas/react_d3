@@ -2,7 +2,7 @@ import React from 'react';
 import ScatterPlot from './scatter_plot';
 
 // Scale Factor for Chart
-const sF = 1;
+const sF = 0.25;
 
 // Chart Dimensions
 const style = {
