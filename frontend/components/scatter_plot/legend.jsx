@@ -14,7 +14,7 @@ const Legend = (props) => {
         color = colors[i % colors.length],
         valueStyle = { fontSize: textHeight + "px"};
     return (
-      <text key={i} x={x} y={y} style={valueStyle} textLength={width}>
+      <text key={i} x={x} y={y} style={valueStyle} textLength={width} lengthAdjust="spacing">
         {value}
       </text>
     );

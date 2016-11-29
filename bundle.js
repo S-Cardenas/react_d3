@@ -62,7 +62,7 @@
 	
 	var _chart2 = _interopRequireDefault(_chart);
 	
-	var _chart3 = __webpack_require__(226);
+	var _chart3 = __webpack_require__(219);
 	
 	var _chart4 = _interopRequireDefault(_chart3);
 	
@@ -39963,14 +39963,7 @@
 	exports.default = Rectangles;
 
 /***/ },
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39985,7 +39978,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _scatter_plot = __webpack_require__(227);
+	var _scatter_plot = __webpack_require__(220);
 	
 	var _scatter_plot2 = _interopRequireDefault(_scatter_plot);
 	
@@ -40071,7 +40064,7 @@
 	exports.default = Chart;
 
 /***/ },
-/* 227 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40084,15 +40077,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(228);
+	var _legend = __webpack_require__(221);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(229);
+	var _x_y_axis = __webpack_require__(222);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(231);
+	var _group = __webpack_require__(224);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -40305,7 +40298,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40340,7 +40333,7 @@
 	        valueStyle = { fontSize: textHeight + "px" };
 	    return _react2.default.createElement(
 	      "text",
-	      { key: i, x: x, y: y, style: valueStyle, textLength: width },
+	      { key: i, x: x, y: y, style: valueStyle, textLength: width, lengthAdjust: "spacing" },
 	      value
 	    );
 	  });
@@ -40377,7 +40370,7 @@
 	exports.default = Legend;
 
 /***/ },
-/* 229 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40390,7 +40383,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(230);
+	var _axis = __webpack_require__(223);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -40428,7 +40421,7 @@
 	};
 
 /***/ },
-/* 230 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40534,7 +40527,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 231 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40547,7 +40540,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _circles = __webpack_require__(232);
+	var _circles = __webpack_require__(225);
 	
 	var _circles2 = _interopRequireDefault(_circles);
 	
@@ -40584,7 +40577,7 @@
 	exports.default = Group;
 
 /***/ },
-/* 232 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
