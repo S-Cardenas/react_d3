@@ -61,9 +61,8 @@ const findMaxRangeValue = (data) => {
 };
 
 // Returns a function to scale the range from the data to fit the chart
-const xScale = (props) => {
-    const { data, style } = props,
-          maxY = findMaxRangeValue(data);
+const xScale = (data, style) => {
+    const maxY = findMaxRangeValue(data);
 
     return(
       d3.scaleLinear()
@@ -73,21 +72,19 @@ const xScale = (props) => {
 };
 
 // Returnsns a function to scale the subdomain from the data to fit the chart
-const y1Scale = (props) => {
-  const { data, style } = props,
-        domain = findSubDomainValues(data);
+const y1Scale = (data, style) => {
+  const domain = findSubDomainValues(data);
 
   return(
     d3.scaleBand()
       .domain(domain)
-      .rangeRound([0,y0Scale(props).bandwidth()])
+      .rangeRound([0,y0Scale(data, style).bandwidth()])
   );
 };
 
 // Reutrns a function to scale the domain from the data to fit the chart
-const y0Scale = (props) => {
-  const { data, style } = props,
-        domain = findDomainValues(data);
+const y0Scale = (data, style) => {
+  const domain = findDomainValues(data);
 
   return(
     d3.scaleBand()
@@ -114,11 +111,21 @@ const calculateMarginBottom = (style, parameters) => {
 };
 
 export default (props) => {
-    const { data, style } = props;
-
-    const scales = {  xScale : xScale(props),
-                      y0Scale : y0Scale(props),
-                      y1Scale: y1Scale(props),
+    const { data, scalingFactor } = props;
+    const sF = (scalingFactor) ? scalingFactor : 1;
+    // const sF = scalingFactor;
+    const style = {
+      svgWidth : 1170 * sF,
+      svgHeight : 730 * sF,
+      chart : {height: 450 * sF, width: 1000 * sF},
+      margin : {top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF},
+      axisMargin : {bottom: 55 * sF, left: 25 * sF},
+      legend: {verticalPadding: 50 * sF },
+      sF: sF
+    };
+    const scales = {  xScale : xScale(data, style),
+                      y0Scale : y0Scale(data, style),
+                      y1Scale: y1Scale(data, style),
                       domainAxisTitle: findDomainAxisTitle(data),
                       rangeAxisTitle: findRangeAxisTitle(data)};
     const parameters = { domain: findDomainValues(data),
@@ -131,7 +138,6 @@ export default (props) => {
     const marginBottom = calculateMarginBottom(style, parameters);
 
     style.svgHeight = style.margin.top + style.chart.height + marginBottom;
-
     return (
       <svg width={style.svgWidth}
            height={style.svgHeight}>
