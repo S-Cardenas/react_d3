@@ -43,7 +43,7 @@ class Chart extends React.Component {
       return (
           <div>
             <h1>Line Chart</h1>
-            <LineChart style={style} data={this.state.data}/>
+            <LineChart data={this.state.data} scalingFactor={1}/>
           </div>
       );
     }

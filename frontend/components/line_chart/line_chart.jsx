@@ -70,8 +70,7 @@ const findMinRangeValue = (data) => {
 };
 
 // Returns a function that scales domain from the data to fit the chart
-const x0Scale = (props) => {
-  const { data, style } = props;
+const x0Scale = (data, style) => {
   let domain = findDomainValues(data);
 
   return(
@@ -82,21 +81,19 @@ const x0Scale = (props) => {
 };
 
 // Reutrns a function to scale the subdomain from the data to fit the chart
-const x1Scale = (props) => {
-  const { data } = props,
-        domain = findSubDomainValues(data);
+const x1Scale = (data, style) => {
+  const domain = findSubDomainValues(data);
 
   return(
     d3.scaleBand()
       .domain(domain)
-      .rangeRound([0,x0Scale(props).bandwidth()])
+      .rangeRound([0,x0Scale(data, style).bandwidth()])
   );
 };
 
 // Returns a function to scale range coordinates from the data to fit the chart
-const yScale = (props) => {
-  const { data, style } = props,
-        maxY = findMaxRangeValue(data),
+const yScale = (data, style) => {
+  const maxY = findMaxRangeValue(data),
         minY = findMinRangeValue(data);
 
   return(
@@ -135,10 +132,20 @@ const calculateMarginBottom = (style, parameters) => {
 };
 
 export default (props) => {
-    const { data, style } = props;
-    const scales = {  x0Scale : x0Scale(props),
-                      x1Scale : x1Scale(props),
-                      yScale: yScale(props),
+    const { data, scalingFactor } = props;
+    const sF = (scalingFactor) ? scalingFactor : 1;
+    const style = {
+      svgWidth : 1170 * sF,
+      svgHeight : 730 * sF,
+      chart : {height: 450 * sF, width: 1000 * sF},
+      margin : {top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF},
+      axisMargin : {bottom: 55 * sF, left: 25 * sF},
+      legend: {verticalPadding: 50 * sF },
+      sF: sF
+    };
+    const scales = {  x0Scale : x0Scale(data, style),
+                      x1Scale : x1Scale(data, style),
+                      yScale: yScale(data, style),
                       domainAxisTitle: findDomainAxisTitle(data),
                       rangeAxisTitle: findRangeAxisTitle(data)};
     const parameters = { domain: findDomainValues(data),
