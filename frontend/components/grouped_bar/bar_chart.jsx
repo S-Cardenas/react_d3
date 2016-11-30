@@ -113,7 +113,6 @@ const calculateMarginBottom = (style, parameters) => {
 export default (props) => {
     const { data, scalingFactor } = props;
     const sF = (scalingFactor) ? scalingFactor : 1;
-    // const sF = scalingFactor;
     const style = {
       svgWidth : 1170 * sF,
       svgHeight : 730 * sF,

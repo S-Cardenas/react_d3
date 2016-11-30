@@ -43,7 +43,7 @@ class Chart extends React.Component {
       return (
           <div>
             <h1>Grouped Bar Chart</h1>
-            <BarChart data={this.state.data} scalingFactor={0.5}/>
+            <BarChart data={this.state.data} scalingFactor={1}/>
           </div>
       );
     }

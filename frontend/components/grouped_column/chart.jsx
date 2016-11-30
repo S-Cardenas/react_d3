@@ -44,7 +44,7 @@ class Chart extends React.Component {
       return (
           <div>
             <h1>Grouped Column Chart</h1>
-            <BarChart style={style} data={this.state.data}/>
+            <BarChart data={this.state.data} scalingFactor={1}/>
           </div>
       );
     }
