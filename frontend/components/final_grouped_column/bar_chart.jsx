@@ -10,81 +10,34 @@ import Groups from './group';
 // The minimum value of the data in the range
 var minmiumYValue = undefined;
 
-// Finds the Ordinal/Nominal Domain Values
-const findDomainValues = (data) => {
-  let seriesTypes = data.seriesTypes,
-      idx;
-  seriesTypes.forEach((type, i) => {
-    if (type === "Nominal" || type ==="Ordinal") {
-      idx = i;
-    }
-  });
-
-  if (data.seriesNames[idx] === 'year' || data.xAxisTitle === 'Year') {
-    return convertToYear(data.data[idx]);
-  }
-  else if (data.seriesNames[idx] === 'month') {
-    return convertToMonth(data.data[idx]);
-  }
-  else if(data.seriesNames[idx] === 'date') {
-    return convertToDate(data.data[idx]);
-  }
-  else {
-    return data.data[idx];
-  }
-};
-
-// Finds the Series Titles For Quantitive Values (SubDomain)
-const findSubDomainValues = (data) => {
-  let seriesTypes = data.seriesTypes,
-      idx;
-  seriesTypes.forEach((type, i) => {
-    if (type === "Nominal" || type ==="Ordinal") {
-      idx = i;
-    }
-  });
-
-  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
-};
-
-// Find the series range values (Y values)
-const findRangeValues = (data) => {
-  let seriesTypes = data.seriesTypes,
-      idx,
-      yValues = [],
-      maxY;
-
-  seriesTypes.forEach((type, i) => {
-    if (type === "Nominal" || type ==="Ordinal") {
-      idx = i;
-    }
-  });
-  yValues = data.data.slice(idx + 1, data.data.length);
-
-  return yValues;
-};
-
 //Find the maximum Y value of the input data (Max Range Value)
 const findMaxRangeValue = (range) => {
-  var yValues = range.reduce((a,b) => {
+  let yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
-
-  return Math.max.apply(Math, yValues);
+  let max = Math.max.apply(Math, yValues);
+  if (max <= 0) {
+    return 0;
+  } else {
+    return max;
+  }
 };
 
 // Find the minimum Y value of the input data (Min Range Value)
 const findMinRangeValue = (range) => {
-  var yValues = range.reduce((a,b) => {
+  let yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
-
-  return Math.min.apply(Math,yValues);
+  let min = Math.min.apply(Math,yValues);
+  if (min >= 0) {
+    return 0;
+  } else {
+    return min;
+  }
 };
 
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (domain, style) => {
-  // const domain = findDomainValues(data);
   return(
     d3.scaleBand()
       .domain(domain)
@@ -94,8 +47,6 @@ const x0Scale = (domain, style) => {
 
 // Reutrns a function to scale the subdomain from the data to fit the chart
 const x1Scale = (subDomain, domain, style) => {
-  // const domain = findSubDomainValues(data);
-
   return(
     d3.scaleBand()
       .domain(subDomain)
@@ -158,17 +109,6 @@ const convertToDate = (domain) => {
   return newDomain;
 };
 
-// Find the Domain Axis Title
-const findDomainAxisTitle = (data) => {
-
-  return data.xAxisTitle;
-};
-
-//Find the Range Axis Title
-const findRangeAxisTitle = (data) => {
-  return data.yAxisTitle;
-};
-
 //Calculates the required bottom margin of chart to fit entire Legend
 const calculateMarginBottom = (style, parameters) => {
   return style.axisMargin.bottom +
@@ -187,11 +127,7 @@ const findSVGHeight = (style, parameters) => {
 };
 
 export default (props) => {
-    const $container = $('.chart-container');
-    // const containerWidth = $container.width();
-    // const containerHeight = $container.height();
-
-    const { data, backgroundColor, innerWidth, domain, subDomain, range, domainAxisTitle, rangeAxisTitle } = props;
+    const { backgroundColor, innerWidth, domain, subDomain, range, domainAxisTitle, rangeAxisTitle } = props;
     const containerWidth = innerWidth;
     const containerHeight = innerWidth;
     const sF = containerWidth / 1170;
@@ -229,14 +165,12 @@ export default (props) => {
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}
-                  data={data}
                   parameters={parameters}
                   minmiumYValue={minmiumYValue}/>
           <XYAxis scales={scales}
                   style={style}/>
           <Legend scales = {scales}
                   style={style}
-                  data={data}
                   parameters={parameters}/>
         </g>
       </svg>

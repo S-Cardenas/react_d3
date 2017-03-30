@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Legend = (props) => {
-  const {scales, style, data, currentIndex, parameters} = props,
+  const {scales, style, currentIndex, parameters} = props,
         subDomain = parameters.subDomain,
         chartWidth = style.chart.width,
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"],

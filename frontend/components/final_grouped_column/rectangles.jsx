@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Rectangles = (props) => {
-  const {scales, style, data, currentIndex, parameters, minmiumYValue} = props;
+  const {scales, style, currentIndex, parameters, minmiumYValue} = props;
   const series = parameters.subDomain,
         yData = parameters.range,
         chartHeight = style.chart.height,

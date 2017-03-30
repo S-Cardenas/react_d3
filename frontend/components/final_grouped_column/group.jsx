@@ -2,7 +2,7 @@ import React from 'react';
 import Rectangles from './rectangles';
 
 const Group = (props) => {
-  const {scales, style, data, parameters, minmiumYValue} = props;
+  const {scales, style, parameters, minmiumYValue} = props;
   const domain = parameters.domain;
   var groups = domain.map((currentValue, index) => {
     let xPos = scales.x0Scale(currentValue),
@@ -12,7 +12,6 @@ const Group = (props) => {
       <g className="group" key={index} transform={translate}>
         <Rectangles scales={scales}
                     style={style}
-                    data={data}
                     parameters={parameters}
                     currentIndex={index}
                     minmiumYValue={minmiumYValue}/>

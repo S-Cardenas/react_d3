@@ -70,26 +70,36 @@
 	
 	var _chart6 = _interopRequireDefault(_chart5);
 	
-	var _chart7 = __webpack_require__(229);
+	var _chart7 = __webpack_require__(236);
 	
 	var _chart8 = _interopRequireDefault(_chart7);
 	
+	var _chart9 = __webpack_require__(243);
+	
+	var _chart10 = _interopRequireDefault(_chart9);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// Grouped Column Data
+	
+	
+	//Store and Root Component
+	//React
 	var x0Data = ["A", "B", "C", "D", "E"],
 	    x1Data = ["one", "two"],
 	    yData = [[3, 4, 5, 6, 7], [10, 9, 8, 7, 6]];
 	
-	//Store and Root Component
-	//React
-	
+	// Single Column Data
+	// let x0Data = ["A", "B", "C", "D", "E"],
+	//     x1Data = ["one"],
+	//     yData = [[-3,-4,5,6,7]];
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	    _reactDom2.default.render(_react2.default.createElement(_chart8.default, { domain: x0Data,
+	    _reactDom2.default.render(_react2.default.createElement(_chart10.default, { domain: x0Data,
 	        subDomain: x1Data,
 	        range: yData,
-	        domainAxisTitle: "domain axis title",
-	        rangeAxisTitle: "range axis title" }), document.getElementById('root'));
+	        domainAxisTitle: "letters",
+	        rangeAxisTitle: "frequency" }), document.getElementById('root'));
 	});
 
 /***/ },
@@ -41270,7 +41280,14 @@
 	exports.default = data;
 
 /***/ },
-/* 229 */
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41285,7 +41302,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _bar_chart = __webpack_require__(230);
+	var _bar_chart = __webpack_require__(237);
 	
 	var _bar_chart2 = _interopRequireDefault(_bar_chart);
 	
@@ -41301,9 +41318,7 @@
 	// Import Component
 	
 	
-	// Import Sample Data
-	// import SampleData from './data';
-	
+	// Define Component
 	var Chart = function (_React$Component) {
 	  _inherits(Chart, _React$Component);
 	
@@ -41314,8 +41329,7 @@
 	
 	    _this.updateSize = _this.updateSize.bind(_this);
 	    _this.state = {
-	      innerWidth: window.innerWidth,
-	      data: true
+	      innerWidth: window.innerWidth
 	    };
 	    return _this;
 	  }
@@ -41334,25 +41348,16 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (this.state.data) {
-	        return _react2.default.createElement(
-	          'div',
-	          { className: 'chart-container' },
-	          _react2.default.createElement(_bar_chart2.default, { data: this.state.data,
-	            innerWidth: this.state.innerWidth,
-	            domain: this.props.domain,
-	            subDomain: this.props.subDomain,
-	            range: this.props.range,
-	            domainAxisTitle: this.props.domainAxisTitle,
-	            rangeAxisTitle: this.props.rangeAxisTitle })
-	        );
-	      } else {
-	        return _react2.default.createElement(
-	          'div',
-	          null,
-	          'LOADING......'
-	        );
-	      }
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'chart-container' },
+	        _react2.default.createElement(_bar_chart2.default, { innerWidth: this.state.innerWidth,
+	          domain: this.props.domain,
+	          subDomain: this.props.subDomain,
+	          range: this.props.range,
+	          domainAxisTitle: this.props.domainAxisTitle,
+	          rangeAxisTitle: this.props.rangeAxisTitle })
+	      );
 	    }
 	  }]);
 	
@@ -41362,7 +41367,7 @@
 	exports.default = Chart;
 
 /***/ },
-/* 230 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41375,15 +41380,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _legend = __webpack_require__(231);
+	var _legend = __webpack_require__(238);
 	
 	var _legend2 = _interopRequireDefault(_legend);
 	
-	var _x_y_axis = __webpack_require__(232);
+	var _x_y_axis = __webpack_require__(239);
 	
 	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
 	
-	var _group = __webpack_require__(234);
+	var _group = __webpack_require__(241);
 	
 	var _group2 = _interopRequireDefault(_group);
 	
@@ -41398,64 +41403,17 @@
 	// The minimum value of the data in the range
 	var minmiumYValue = undefined;
 	
-	// Finds the Ordinal/Nominal Domain Values
-	var findDomainValues = function findDomainValues(data) {
-	  var seriesTypes = data.seriesTypes,
-	      idx = void 0;
-	  seriesTypes.forEach(function (type, i) {
-	    if (type === "Nominal" || type === "Ordinal") {
-	      idx = i;
-	    }
-	  });
-	
-	  if (data.seriesNames[idx] === 'year' || data.xAxisTitle === 'Year') {
-	    return convertToYear(data.data[idx]);
-	  } else if (data.seriesNames[idx] === 'month') {
-	    return convertToMonth(data.data[idx]);
-	  } else if (data.seriesNames[idx] === 'date') {
-	    return convertToDate(data.data[idx]);
-	  } else {
-	    return data.data[idx];
-	  }
-	};
-	
-	// Finds the Series Titles For Quantitive Values (SubDomain)
-	var findSubDomainValues = function findSubDomainValues(data) {
-	  var seriesTypes = data.seriesTypes,
-	      idx = void 0;
-	  seriesTypes.forEach(function (type, i) {
-	    if (type === "Nominal" || type === "Ordinal") {
-	      idx = i;
-	    }
-	  });
-	
-	  return data.seriesTitles.slice(idx + 1, data.seriesTitles.length);
-	};
-	
-	// Find the series range values (Y values)
-	var findRangeValues = function findRangeValues(data) {
-	  var seriesTypes = data.seriesTypes,
-	      idx = void 0,
-	      yValues = [],
-	      maxY = void 0;
-	
-	  seriesTypes.forEach(function (type, i) {
-	    if (type === "Nominal" || type === "Ordinal") {
-	      idx = i;
-	    }
-	  });
-	  yValues = data.data.slice(idx + 1, data.data.length);
-	
-	  return yValues;
-	};
-	
 	//Find the maximum Y value of the input data (Max Range Value)
 	var findMaxRangeValue = function findMaxRangeValue(range) {
 	  var yValues = range.reduce(function (a, b) {
 	    return a.concat(b);
 	  }, []);
-	
-	  return Math.max.apply(Math, yValues);
+	  var max = Math.max.apply(Math, yValues);
+	  if (max <= 0) {
+	    return 0;
+	  } else {
+	    return max;
+	  }
 	};
 	
 	// Find the minimum Y value of the input data (Min Range Value)
@@ -41463,20 +41421,21 @@
 	  var yValues = range.reduce(function (a, b) {
 	    return a.concat(b);
 	  }, []);
-	
-	  return Math.min.apply(Math, yValues);
+	  var min = Math.min.apply(Math, yValues);
+	  if (min >= 0) {
+	    return 0;
+	  } else {
+	    return min;
+	  }
 	};
 	
 	// Returns a function that scales domain from the data to fit the chart
 	var x0Scale = function x0Scale(domain, style) {
-	  // const domain = findDomainValues(data);
 	  return d3.scaleBand().domain(domain).rangeRound([0, style.chart.width]);
 	};
 	
 	// Reutrns a function to scale the subdomain from the data to fit the chart
 	var x1Scale = function x1Scale(subDomain, domain, style) {
-	  // const domain = findSubDomainValues(data);
-	
 	  return d3.scaleBand().domain(subDomain).rangeRound([0, x0Scale(domain, style).bandwidth()]);
 	};
 	
@@ -41531,17 +41490,6 @@
 	  return newDomain;
 	};
 	
-	// Find the Domain Axis Title
-	var findDomainAxisTitle = function findDomainAxisTitle(data) {
-	
-	  return data.xAxisTitle;
-	};
-	
-	//Find the Range Axis Title
-	var findRangeAxisTitle = function findRangeAxisTitle(data) {
-	  return data.yAxisTitle;
-	};
-	
 	//Calculates the required bottom margin of chart to fit entire Legend
 	var calculateMarginBottom = function calculateMarginBottom(style, parameters) {
 	  return style.axisMargin.bottom + style.legend.verticalPadding * (Math.floor(parameters.subDomain.length / 3) + 2);
@@ -41554,12 +41502,7 @@
 	};
 	
 	exports.default = function (props) {
-	  var $container = $('.chart-container');
-	  // const containerWidth = $container.width();
-	  // const containerHeight = $container.height();
-	
-	  var data = props.data,
-	      backgroundColor = props.backgroundColor,
+	  var backgroundColor = props.backgroundColor,
 	      innerWidth = props.innerWidth,
 	      domain = props.domain,
 	      subDomain = props.subDomain,
@@ -41606,21 +41549,19 @@
 	      { transform: translate },
 	      _react2.default.createElement(_group2.default, { scales: scales,
 	        style: style,
-	        data: data,
 	        parameters: parameters,
 	        minmiumYValue: minmiumYValue }),
 	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
 	        style: style }),
 	      _react2.default.createElement(_legend2.default, { scales: scales,
 	        style: style,
-	        data: data,
 	        parameters: parameters })
 	    )
 	  );
 	};
 
 /***/ },
-/* 231 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41638,7 +41579,6 @@
 	var Legend = function Legend(props) {
 	  var scales = props.scales,
 	      style = props.style,
-	      data = props.data,
 	      currentIndex = props.currentIndex,
 	      parameters = props.parameters,
 	      subDomain = parameters.subDomain,
@@ -41692,7 +41632,7 @@
 	exports.default = Legend;
 
 /***/ },
-/* 232 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41705,7 +41645,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _axis = __webpack_require__(233);
+	var _axis = __webpack_require__(240);
 	
 	var _axis2 = _interopRequireDefault(_axis);
 	
@@ -41743,7 +41683,7 @@
 	};
 
 /***/ },
-/* 233 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41853,7 +41793,7 @@
 	exports.default = Axis;
 
 /***/ },
-/* 234 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41866,7 +41806,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rectangles = __webpack_require__(235);
+	var _rectangles = __webpack_require__(242);
 	
 	var _rectangles2 = _interopRequireDefault(_rectangles);
 	
@@ -41875,7 +41815,6 @@
 	var Group = function Group(props) {
 	  var scales = props.scales,
 	      style = props.style,
-	      data = props.data,
 	      parameters = props.parameters,
 	      minmiumYValue = props.minmiumYValue;
 	
@@ -41889,7 +41828,6 @@
 	      { className: 'group', key: index, transform: translate },
 	      _react2.default.createElement(_rectangles2.default, { scales: scales,
 	        style: style,
-	        data: data,
 	        parameters: parameters,
 	        currentIndex: index,
 	        minmiumYValue: minmiumYValue })
@@ -41906,7 +41844,7 @@
 	exports.default = Group;
 
 /***/ },
-/* 235 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41924,7 +41862,6 @@
 	var Rectangles = function Rectangles(props) {
 	  var scales = props.scales,
 	      style = props.style,
-	      data = props.data,
 	      currentIndex = props.currentIndex,
 	      parameters = props.parameters,
 	      minmiumYValue = props.minmiumYValue;
@@ -41962,6 +41899,632 @@
 	        fill: color });
 	    });
 	  }
+	  return _react2.default.createElement(
+	    "g",
+	    null,
+	    rectangles
+	  );
+	};
+	
+	exports.default = Rectangles;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _bar_chart = __webpack_require__(244);
+	
+	var _bar_chart2 = _interopRequireDefault(_bar_chart);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // Import Dependencies
+	
+	
+	// Import Component
+	
+	
+	// Define Component
+	var Chart = function (_React$Component) {
+	  _inherits(Chart, _React$Component);
+	
+	  function Chart(props) {
+	    _classCallCheck(this, Chart);
+	
+	    var _this = _possibleConstructorReturn(this, (Chart.__proto__ || Object.getPrototypeOf(Chart)).call(this, props));
+	
+	    _this.updateSize = _this.updateSize.bind(_this);
+	    _this.state = {
+	      innerWidth: window.innerWidth
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Chart, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      // this.setState({data: SampleData});
+	      window.addEventListener('resize', this.updateSize);
+	    }
+	  }, {
+	    key: 'updateSize',
+	    value: function updateSize() {
+	      this.setState({ innerWidth: window.innerWidth });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'chart-container' },
+	        _react2.default.createElement(_bar_chart2.default, { innerWidth: this.state.innerWidth,
+	          domain: this.props.domain,
+	          subDomain: this.props.subDomain,
+	          range: this.props.range,
+	          domainAxisTitle: this.props.domainAxisTitle,
+	          rangeAxisTitle: this.props.rangeAxisTitle })
+	      );
+	    }
+	  }]);
+	
+	  return Chart;
+	}(_react2.default.Component);
+	
+	exports.default = Chart;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _legend = __webpack_require__(245);
+	
+	var _legend2 = _interopRequireDefault(_legend);
+	
+	var _x_y_axis = __webpack_require__(246);
+	
+	var _x_y_axis2 = _interopRequireDefault(_x_y_axis);
+	
+	var _group = __webpack_require__(248);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var d3 = __webpack_require__(211);
+	
+	// Import Axis and Groups
+	// Import React and D3
+	
+	
+	// The minimum value of the data in the range
+	var minmiumYValue = undefined;
+	
+	// Find the maximum Y value of the input data (Max Range Value)
+	var findMaxRangeValue = function findMaxRangeValue(range) {
+	  var yValues = range.reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
+	  var max = Math.max.apply(Math, yValues);
+	  if (max <= 0) {
+	    return 0;
+	  } else {
+	    return max;
+	  }
+	};
+	
+	// Find the minimum Y value of the input data (Min Range Value)
+	var findMinRangeValue = function findMinRangeValue(range) {
+	  var yValues = range.reduce(function (a, b) {
+	    return a.concat(b);
+	  }, []);
+	  var min = Math.min.apply(Math, yValues);
+	  if (min >= 0) {
+	    return 0;
+	  } else {
+	    return min;
+	  }
+	};
+	
+	// Returns a function to scale the range from the data to fit the chart
+	var xScale = function xScale(range, style) {
+	  var maxY = findMaxRangeValue(range);
+	  var minY = findMinRangeValue(range);
+	  minmiumYValue = minY; // to be passed down as props later
+	  return d3.scaleLinear().range([0, style.chart.width]).domain([minY, maxY]);
+	};
+	
+	// Returns a function to scale the subdomain from the data to fit the chart
+	var y1Scale = function y1Scale(subDomain, domain, style) {
+	  return d3.scaleBand().domain(subDomain).rangeRound([0, y0Scale(domain, style).bandwidth()]);
+	};
+	
+	// Reutrns a function to scale the domain from the data to fit the chart
+	var y0Scale = function y0Scale(domain, style) {
+	  return d3.scaleBand().domain(domain).range([style.chart.height, 0]);
+	  // .rangeRound causes aesthetic errors if the width of the domain is not a multiple of
+	  // the cardinality of the range, there may be leftover unused space, even without padding!
+	  // Use band.align to specify how the leftover space is distributed
+	  // https://github.com/d3/d3-scale/blob/master/README.md#band_round
+	  //////////////
+	  // return(
+	  //   d3.scaleBand()
+	  //     .domain(domain)
+	  //     .rangeRound([style.chart.height, 0])
+	  //
+	  // );
+	};
+	
+	// Convert Epoch to Standard Time (Year)
+	var convertToYear = function convertToYear(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0);
+	    date.setUTCSeconds(epoch);
+	    return date.getFullYear();
+	  });
+	
+	  return newDomain;
+	};
+	
+	// Convert Epoch to Standard Time (Month)
+	var convertToMonth = function convertToMonth(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        year = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    year = date.getFullYear().toString();
+	
+	    return month + "/" + year;
+	  });
+	
+	  return newDomain;
+	};
+	
+	// Convert Epoch to Standard Time (date)
+	var convertToDate = function convertToDate(domain) {
+	  var newDomain = domain.map(function (epoch) {
+	    var date = new Date(0),
+	        month = void 0,
+	        day = void 0;
+	    date.setUTCSeconds(epoch);
+	    month = (date.getMonth() + 1).toString();
+	    day = date.getDate().toString();
+	
+	    return month + "/" + day;
+	  });
+	  return newDomain;
+	};
+	
+	// Find the Domain Axis Title
+	var findDomainAxisTitle = function findDomainAxisTitle(data) {
+	  return data.xAxisTitle;
+	};
+	
+	//Find the Range Axis Title
+	var findRangeAxisTitle = function findRangeAxisTitle(data) {
+	  return data.yAxisTitle;
+	};
+	
+	//Calculates the required bottom margin of chart to fit entire Legend
+	var calculateMarginBottom = function calculateMarginBottom(style, parameters) {
+	  return style.axisMargin.bottom + style.legend.verticalPadding * (Math.floor(parameters.subDomain.length / 3) + 2);
+	};
+	
+	//Find the SVGHeight based on the datasize and styles
+	var findSVGHeight = function findSVGHeight(style, parameters) {
+	  var newSVGHeight = style.margin.top + style.chart.height + 2 * style.axisMargin.bottom + (style.legend.verticalPadding * (Math.floor(parameters.subDomain.length / 4) + 1) - style.textHeight);
+	  return newSVGHeight;
+	};
+	
+	exports.default = function (props) {
+	  var backgroundColor = props.backgroundColor,
+	      innerWidth = props.innerWidth,
+	      domain = props.domain,
+	      subDomain = props.subDomain,
+	      range = props.range,
+	      domainAxisTitle = props.domainAxisTitle,
+	      rangeAxisTitle = props.rangeAxisTitle;
+	
+	  var containerWidth = innerWidth;
+	  var containerHeight = innerWidth;
+	  var sF = containerWidth / 1170;
+	  var style = {
+	    svgWidth: 1170 * sF,
+	    svgHeight: 730 * sF,
+	    chart: { height: 450 * sF, width: 1000 * sF },
+	    margin: { top: 20 * sF, right: 20 * sF, bottom: 260 * sF, left: 150 * sF },
+	    axisMargin: { bottom: 55 * sF, left: 25 * sF },
+	    legend: { verticalPadding: 50 * sF },
+	    sF: sF,
+	    textHeight: 20 * sF
+	  };
+	  var scales = {
+	    xScale: xScale(range, style),
+	    y0Scale: y0Scale(domain, style),
+	    y1Scale: y1Scale(subDomain, domain, style),
+	    domainAxisTitle: domainAxisTitle,
+	    rangeAxisTitle: rangeAxisTitle };
+	  var parameters = {
+	    domain: domain,
+	    subDomain: subDomain,
+	    range: range
+	  };
+	  var newSVGHeight = findSVGHeight(style, parameters);
+	  var translate = "translate(" + style.margin.left + "," + style.margin.top + ")";
+	  var marginBottom = calculateMarginBottom(style, parameters);
+	  style.svgHeight = style.margin.top + style.chart.height + marginBottom;
+	  return _react2.default.createElement(
+	    'svg',
+	    { width: containerWidth,
+	      height: newSVGHeight,
+	      style: { backgroundColor: backgroundColor } },
+	    _react2.default.createElement(
+	      'g',
+	      { transform: translate },
+	      _react2.default.createElement(_group2.default, { scales: scales,
+	        style: style,
+	        parameters: parameters,
+	        minmiumYValue: minmiumYValue }),
+	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
+	        style: style }),
+	      _react2.default.createElement(_legend2.default, { scales: scales,
+	        style: style,
+	        parameters: parameters })
+	    )
+	  );
+	};
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Legend = function Legend(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters,
+	      subDomain = parameters.subDomain,
+	      chartWidth = style.chart.width,
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
+	      textHeight = style.textHeight;
+	
+	
+	  var legendValues = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4),
+	        width = chartWidth / 4 - 30,
+	        color = colors[i % colors.length],
+	        valueStyle = { fontSize: textHeight + "px" };
+	    return _react2.default.createElement(
+	      "text",
+	      { key: i, x: x, y: y, style: valueStyle, textLength: width, lengthAdjust: "spacing" },
+	      value
+	    );
+	  });
+	
+	  var legendBorders = subDomain.map(function (value, i) {
+	    var x = chartWidth / 4 * (i % 4),
+	        y = style.legend.verticalPadding * Math.floor(i / 4) - style.textHeight,
+	        width = chartWidth / 4 - 15,
+	        padding = 10,
+	        color = colors[i % colors.length],
+	        valueStyle = { outline: "thin solid" + color, fontSize: "20px" };
+	
+	    return _react2.default.createElement("rect", { x: x - padding,
+	      y: y,
+	      width: width,
+	      height: 25 * style.sF,
+	      key: i,
+	      stroke: color,
+	      fill: "transparent",
+	      rx: 5,
+	      ry: 5 });
+	  });
+	
+	  var translate = "translate( 0," + (style.chart.height + style.margin.top + style.axisMargin.bottom * 2) + ")";
+	
+	  return _react2.default.createElement(
+	    "g",
+	    { transform: translate },
+	    legendValues,
+	    legendBorders
+	  );
+	};
+	
+	exports.default = Legend;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _axis = __webpack_require__(247);
+	
+	var _axis2 = _interopRequireDefault(_axis);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// unfinished/src/components/x-y-axis.jsx
+	var d3 = __webpack_require__(211);
+	
+	exports.default = function (props) {
+	  var scales = props.scales,
+	      style = props.style;
+	
+	
+	  var chartHeight = style.chart.height;
+	
+	  var xSettings = {
+	    translate: "translate(0," + chartHeight + ")",
+	    scale: scales.xScale,
+	    orient: 'bottom',
+	    title: scales.rangeAxisTitle
+	  };
+	
+	  var ySettings = {
+	    translate: "translate(0,0)",
+	    scale: scales.y0Scale,
+	    orient: 'left',
+	    title: scales.domainAxisTitle
+	  };
+	
+	  return _react2.default.createElement(
+	    'g',
+	    { className: 'xy-axis' },
+	    _react2.default.createElement(_axis2.default, { scale: xSettings, style: style }),
+	    _react2.default.createElement(_axis2.default, { scale: ySettings, style: style })
+	  );
+	};
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var d3 = __webpack_require__(211);
+	
+	var Axis = function (_React$Component) {
+	  _inherits(Axis, _React$Component);
+	
+	  function Axis() {
+	    _classCallCheck(this, Axis);
+	
+	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	  }
+	
+	  _createClass(Axis, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.renderAxis();
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      this.renderAxis();
+	    }
+	  }, {
+	    key: 'renderAxis',
+	    value: function renderAxis() {
+	      var node = this.refs.axis;
+	
+	      if (this.props.scale.orient === 'bottom') {
+	        var axis = d3.axisBottom(this.props.scale.scale);
+	      } else if (this.props.scale.orient === 'left') {
+	        var axis = d3.axisLeft(this.props.scale.scale);
+	      }
+	
+	      d3.select(node).call(axis);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          scale = _props.scale,
+	          style = _props.style;
+	
+	      var x = void 0,
+	          y = void 0,
+	          rotate = void 0,
+	          title = void 0,
+	          axisLabelFontSize = 20 * style.sF,
+	          axisTickFontSize = 10 * style.sF,
+	          axisLabelValueStyle = { fontSize: axisLabelFontSize + "px" },
+	          axisTickValueStyle = { fontSize: axisTickFontSize + "px" };
+	
+	      if (this.props.scale.orient === 'bottom') {
+	        x = (style.svgWidth - style.margin.left - style.margin.right) / 2;
+	        y = style.margin.top + style.chart.height + style.axisMargin.bottom;
+	      } else {
+	        x = -style.margin.left + style.axisMargin.left;
+	        y = style.margin.top + style.chart.height / 2;
+	        rotate = "rotate(-90," + x + "," + y + ")";
+	      }
+	
+	      title = scale.title ? scale.title : 'Axis Title';
+	
+	      return _react2.default.createElement(
+	        'g',
+	        null,
+	        _react2.default.createElement('g', { className: 'axis',
+	          ref: 'axis',
+	          transform: scale.translate,
+	          style: axisTickValueStyle }),
+	        _react2.default.createElement(
+	          'text',
+	          { textAnchor: "middle",
+	            x: x,
+	            y: y,
+	            style: axisLabelValueStyle,
+	            transform: rotate },
+	          title
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Axis;
+	}(_react2.default.Component);
+	
+	exports.default = Axis;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rectangles = __webpack_require__(249);
+	
+	var _rectangles2 = _interopRequireDefault(_rectangles);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Group = function Group(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      parameters = props.parameters,
+	      minmiumYValue = props.minmiumYValue;
+	
+	  var domain = parameters.domain;
+	  var groups = domain.map(function (currentValue, index) {
+	    var yPos = scales.y0Scale(currentValue),
+	        translate = "translate(0," + yPos + ")";
+	
+	    return _react2.default.createElement(
+	      'g',
+	      { className: 'group', key: index, transform: translate },
+	      _react2.default.createElement(_rectangles2.default, { scales: scales,
+	        style: style,
+	        parameters: parameters,
+	        currentIndex: index,
+	        minmiumYValue: minmiumYValue })
+	    );
+	  });
+	
+	  return _react2.default.createElement(
+	    'g',
+	    null,
+	    groups
+	  );
+	};
+	
+	exports.default = Group;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Rectangles = function Rectangles(props) {
+	  var scales = props.scales,
+	      style = props.style,
+	      currentIndex = props.currentIndex,
+	      parameters = props.parameters,
+	      minmiumYValue = props.minmiumYValue;
+	
+	  var series = parameters.subDomain,
+	      xData = parameters.range,
+	      chartWidth = style.chart.width,
+	      barWidth = scales.y1Scale.bandwidth(),
+	      colors = ["#008080", "#FF0000", "#FFD700", "#800080"];
+	  var rectangles = series.map(function (currentValue, i) {
+	    var x = minmiumYValue < 0 ? scales.xScale(Math.min(0, xData[i][currentIndex])) : 0,
+	        yPos = scales.y1Scale(currentValue),
+	        width = Math.abs(scales.xScale(xData[i][currentIndex]) - scales.xScale(0)),
+	        color = colors[i % colors.length];
+	    return _react2.default.createElement("rect", { x: x,
+	      y: yPos,
+	      width: width,
+	      height: barWidth,
+	      key: i,
+	      fill: color });
+	  });
 	  return _react2.default.createElement(
 	    "g",
 	    null,
