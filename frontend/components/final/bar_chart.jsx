@@ -65,8 +65,8 @@ const findRangeValues = (data) => {
 };
 
 //Find the maximum Y value of the input data (Max Range Value)
-const findMaxRangeValue = (data) => {
-  var yValues = findRangeValues(data).reduce((a,b) => {
+const findMaxRangeValue = (range) => {
+  var yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
 
@@ -74,8 +74,8 @@ const findMaxRangeValue = (data) => {
 };
 
 // Find the minimum Y value of the input data (Min Range Value)
-const findMinRangeValue = (data) => {
-  var yValues = findRangeValues(data).reduce((a,b) => {
+const findMinRangeValue = (range) => {
+  var yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
 
@@ -83,31 +83,30 @@ const findMinRangeValue = (data) => {
 };
 
 // Returns a function that scales domain from the data to fit the chart
-const x0Scale = (xData, style) => {
+const x0Scale = (domain, style) => {
   // const domain = findDomainValues(data);
-  const domain = xData;
   return(
     d3.scaleBand()
-      .domain(xData)
+      .domain(domain)
       .rangeRound([0, style.chart.width])
   );
 };
 
 // Reutrns a function to scale the subdomain from the data to fit the chart
-const x1Scale = (data, style) => {
-  const domain = findSubDomainValues(data);
-  console.log("subdomain", domain);
+const x1Scale = (subDomain, domain, style) => {
+  // const domain = findSubDomainValues(data);
+
   return(
     d3.scaleBand()
-      .domain(domain)
-      .rangeRound([0,x0Scale(data, style).bandwidth()])
+      .domain(subDomain)
+      .rangeRound([0,x0Scale(domain, style).bandwidth()])
   );
 };
 
 // Returns a function to scale range coordinates from the data to fit the chart
-const yScale = (data, style) => {
-  const maxY = findMaxRangeValue(data);
-  const minY = findMinRangeValue(data);
+const yScale = (range, style) => {
+  const maxY = findMaxRangeValue(range);
+  const minY = findMinRangeValue(range);
   minmiumYValue = minY; // to be passed down as props later
   return(
     d3.scaleLinear()
@@ -192,7 +191,7 @@ export default (props) => {
     // const containerWidth = $container.width();
     // const containerHeight = $container.height();
 
-    const { data, backgroundColor, innerWidth, xData, yData } = props;
+    const { data, backgroundColor, innerWidth, domain, subDomain, range, domainAxisTitle, rangeAxisTitle } = props;
     const containerWidth = innerWidth;
     const containerHeight = innerWidth;
     const sF = containerWidth / 1170;
@@ -206,15 +205,16 @@ export default (props) => {
       sF: sF,
       textHeight: 20 * sF
     };
-    const scales = {  x0Scale : x0Scale(xData, style),
-                      x1Scale : x1Scale(data, style),
-                      yScale: yScale(data, style),
-                      domainAxisTitle: findDomainAxisTitle(data),
-                      rangeAxisTitle: findRangeAxisTitle(data)};
-    const parameters = { domain: findDomainValues(data),
-                         subDomain: findSubDomainValues(data),
-                         range: findRangeValues(data)
+    const scales = {  x0Scale : x0Scale(domain, style),
+                      x1Scale : x1Scale(subDomain, domain, style),
+                      yScale: yScale(range, style),
+                      domainAxisTitle: domainAxisTitle,
+                      rangeAxisTitle: rangeAxisTitle};
+    const parameters = { domain: domain,
+                         subDomain: subDomain,
+                         range: range
                         };
+
     const newSVGHeight = findSVGHeight(style, parameters);
     const translate = "translate(" + style.margin.left + ","
                       + style.margin.right + ")";
@@ -225,7 +225,7 @@ export default (props) => {
     return (
       <svg width={containerWidth}
            height={newSVGHeight}
-           style={{backgroundColor: backgroundColor}}>
+           style={{backgroundColor: "white"}}>
         <g transform={translate}>
           <Groups scales = {scales}
                   style={style}

@@ -60,7 +60,7 @@ const findRangeValues = (data) => {
     }
   });
   yValues = data.data.slice(idx + 1, data.data.length);
-
+  console.log("yValues", yValues);
   return yValues;
 };
 
@@ -215,6 +215,7 @@ export default (props) => {
                          subDomain: findSubDomainValues(data),
                          range: findRangeValues(data)
                         };
+    console.log("parameters", parameters);
     const newSVGHeight = findSVGHeight(style, parameters);
     const translate = "translate(" + style.margin.left + ","
                       + style.margin.right + ")";

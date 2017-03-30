@@ -42,7 +42,13 @@ class Chart extends React.Component {
     if (this.state.data) {
       return (
           <div className="chart-container">
-            <BarChart data={this.state.data} innerWidth={this.state.innerWidth} />
+            <BarChart data={this.state.data}
+                      innerWidth={this.state.innerWidth}
+                      domain={this.props.domain}
+                      subDomain={this.props.subDomain}
+                      range={this.props.range}
+                      domainAxisTitle={this.props.domainAxisTitle}
+                      rangeAxisTitle={this.props.rangeAxisTitle}/>
           </div>
       );
     }

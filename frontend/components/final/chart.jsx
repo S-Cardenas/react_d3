@@ -5,22 +5,21 @@ import React from 'react';
 import BarChart from './bar_chart';
 
 // Import Sample Data
-import SampleData from './data';
+// import SampleData from './data';
 
 class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.updateSize = this.updateSize.bind(this);
     this.state = {
-      innerWidth: window.innerWidth
+      innerWidth: window.innerWidth,
+      data: true
     };
   }
 
   componentWillMount() {
-    this.setState({data: SampleData});
+    // this.setState({data: SampleData});
     window.addEventListener('resize', this.updateSize);
-    this.xData = this.props.xData;
-    this.yData = this.props.yData;
   }
 
   updateSize() {
@@ -31,9 +30,13 @@ class Chart extends React.Component {
     if (this.state.data) {
       return (
           <div className="chart-container">
-            <BarChart innerWidth={this.state.innerWidth}
-                      xData={this.xData}
-                      yData={this.yData}/>
+            <BarChart data={this.state.data}
+                      innerWidth={this.state.innerWidth}
+                      domain={this.props.domain}
+                      subDomain={this.props.subDomain}
+                      range={this.props.range}
+                      domainAxisTitle={this.props.domainAxisTitle}
+                      rangeAxisTitle={this.props.rangeAxisTitle}/>
           </div>
       );
     }
