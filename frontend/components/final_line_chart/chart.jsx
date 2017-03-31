@@ -25,9 +25,12 @@ class Chart extends React.Component {
 
   render() {
       return (
-          <div className="chart-container">
-            <LineChart data={this.state.data}/>
-          </div>
+        <LineChart innerWidth={this.state.innerWidth}
+                  domain={this.props.domain}
+                  subDomain={this.props.subDomain}
+                  range={this.props.range}
+                  domainAxisTitle={this.props.domainAxisTitle}
+                  rangeAxisTitle={this.props.rangeAxisTitle}/>
       );
   }
 }

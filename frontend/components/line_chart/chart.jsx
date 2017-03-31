@@ -15,27 +15,28 @@ const style = {
   sF: sF
 };
 
-var data;
+// Import Sample Data
+import SampleData from './data';
 
 class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: undefined
+      data: SampleData
     };
   }
 
   componentDidMount() {
-    $.ajax({
-      type: 'GET',
-      url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/federal_hate_crime_statistics_2006_2014_single_bias_incidents_hdfsformat',
-      success: function(response) {
-        this.setState({data: response});
-      }.bind(this),
-      error: function(e) {
-        console.log(e);
-      }
-    });
+    // $.ajax({
+    //   type: 'GET',
+    //   url: 'https://grafiti-api.herokuapp.com/api/v1/datasets/federal_hate_crime_statistics_2006_2014_single_bias_incidents_hdfsformat',
+    //   success: function(response) {
+    //     this.setState({data: response});
+    //   }.bind(this),
+    //   error: function(e) {
+    //     console.log(e);
+    //   }
+    // });
   }
 
   render() {
@@ -52,7 +53,6 @@ class Chart extends React.Component {
         <div>LOADING......</div>
       );
     }
-
   }
 }
 

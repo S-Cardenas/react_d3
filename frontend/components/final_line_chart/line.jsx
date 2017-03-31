@@ -3,7 +3,7 @@ import React from 'react';
 const Line = (props) => {
   const {scales, style, data, currentIndex, parameters} = props,
         colors = ["#008080", "#FF0000", "#FFD700", "#800080"],
-        yValues = data.data[currentIndex + 1],
+        yValues = parameters.range[currentIndex],
         xValues = parameters.domain,
         lineThickness = 3 * style.sF;
 

@@ -8,8 +8,8 @@ import XYAxis from './x_y_axis';
 import Groups from './group';
 
 //Find the maximum Y value of the input data (Max Range Value)
-const findMaxRangeValue = (data) => {
-  var yValues = findRangeValues(data).reduce((a,b) => {
+const findMaxRangeValue = (range) => {
+  var yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
 
@@ -17,8 +17,8 @@ const findMaxRangeValue = (data) => {
 };
 
 // Find the minimum Y value of the input data (Min Range Value)
-const findMinRangeValue = (data) => {
-  var yValues = findRangeValues(data).reduce((a,b) => {
+const findMinRangeValue = (range) => {
+  var yValues = range.reduce((a,b) => {
     return a.concat(b);
   }, []);
   return Math.min.apply(Math, yValues);
@@ -26,8 +26,9 @@ const findMinRangeValue = (data) => {
 
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (domain, style) => {
+  console.log("domain", domain);
   return(
-    d3.scaleBand()
+    d3.scalePoint()
       .domain(domain)
       .range([0, style.chart.width])
   );
@@ -43,13 +44,13 @@ const x0Scale = (domain, style) => {
 };
 
 // Reutrns a function to scale the subdomain from the data to fit the chart
-const x1Scale = (subdomain, domain, style) => {
-  return(
-    d3.scaleBand()
-      .domain(subdomain)
-      .rangeRound([0,x0Scale(domain, style).bandwidth()])
-  );
-};
+// const x1Scale = (subdomain, domain, style) => {
+//   return(
+//     d3.scaleBand()
+//       .domain(subdomain)
+//       .rangeRound([0,x0Scale(domain, style).bandwidth()])
+//   );
+// };
 
 // Returns a function to scale range coordinates from the data to fit the chart
 const yScale = (range, style) => {
@@ -137,7 +138,7 @@ export default (props) => {
       textHeight: 20 * sF
     };
     const scales = {  x0Scale : x0Scale(domain, style),
-                      x1Scale : x1Scale(subDomain, domain, style),
+
                       yScale: yScale(range, style),
                       domainAxisTitle: domainAxisTitle,
                       rangeAxisTitle: rangeAxisTitle};
