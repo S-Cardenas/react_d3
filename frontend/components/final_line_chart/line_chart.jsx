@@ -26,7 +26,6 @@ const findMinRangeValue = (range) => {
 
 // Returns a function that scales domain from the data to fit the chart
 const x0Scale = (domain, style) => {
-  console.log("domain", domain);
   return(
     d3.scalePoint()
       .domain(domain)

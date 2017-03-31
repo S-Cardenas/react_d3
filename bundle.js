@@ -43338,7 +43338,6 @@
 	
 	// Returns a function that scales domain from the data to fit the chart
 	var x0Scale = function x0Scale(domain, style) {
-	  console.log("domain", domain);
 	  return d3.scalePoint().domain(domain).range([0, style.chart.width]);
 	
 	  // .rangeRound causes aesthetic errors if the width of the domain is not a multiple of
