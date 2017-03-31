@@ -6,7 +6,6 @@ const Group = (props) => {
   const domain = parameters.domain,
         series = parameters.subDomain;
   var paths = series.map((currentValue, index) => {
-
     return(
       <g className="group" key={index}>
         <Line scales={scales}

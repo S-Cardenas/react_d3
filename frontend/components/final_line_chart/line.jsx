@@ -6,11 +6,8 @@ const Line = (props) => {
         yValues = parameters.range[currentIndex],
         xValues = parameters.domain,
         lineThickness = 3 * style.sF;
-
   let path = "",
       color = colors[currentIndex % colors.length];
-
-
   for (let i = 0; i < xValues.length; i++) {
     let pos = undefined,
         x = scales.x0Scale(xValues[i]),
@@ -24,7 +21,6 @@ const Line = (props) => {
       path += pos;
     }
   }
-
   return (
     <path d={path}
           fill={'none'}

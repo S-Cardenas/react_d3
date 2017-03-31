@@ -42,15 +42,6 @@ const x0Scale = (domain, style) => {
   // );
 };
 
-// Reutrns a function to scale the subdomain from the data to fit the chart
-// const x1Scale = (subdomain, domain, style) => {
-//   return(
-//     d3.scaleBand()
-//       .domain(subdomain)
-//       .rangeRound([0,x0Scale(domain, style).bandwidth()])
-//   );
-// };
-
 // Returns a function to scale range coordinates from the data to fit the chart
 const yScale = (range, style) => {
   const maxY = findMaxRangeValue(range),
@@ -69,7 +60,6 @@ const convertToYear = (domain) => {
     date.setUTCSeconds(epoch);
     return date.getFullYear();
   });
-
   return newDomain;
 };
 
@@ -82,10 +72,8 @@ const convertToMonth = (domain) => {
     date.setUTCSeconds(epoch);
     month = (date.getMonth() + 1).toString();
     year = date.getFullYear().toString();
-
     return month + "/" + year;
   });
-
   return newDomain;
 };
 
@@ -137,7 +125,6 @@ export default (props) => {
       textHeight: 20 * sF
     };
     const scales = {  x0Scale : x0Scale(domain, style),
-
                       yScale: yScale(range, style),
                       domainAxisTitle: domainAxisTitle,
                       rangeAxisTitle: rangeAxisTitle};

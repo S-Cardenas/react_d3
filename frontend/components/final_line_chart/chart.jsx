@@ -15,7 +15,6 @@ class Chart extends React.Component {
   }
 
   componentWillMount() {
-    // this.setState({data: SampleData});
     window.addEventListener('resize', this.updateSize);
   }
 
