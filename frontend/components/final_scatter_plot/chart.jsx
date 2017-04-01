@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Import Components
-import LineChart from './line_chart';
+import ScatterPlot from './scatter_plot';
 
 // Define Component
 class Chart extends React.Component {
@@ -23,14 +23,14 @@ class Chart extends React.Component {
   }
 
   render() {
-      return (
-        <LineChart innerWidth={this.state.innerWidth}
+    return (
+      <ScatterPlot innerWidth={this.state.innerWidth}
                    domain={this.props.domain}
                    subDomain={this.props.subDomain}
                    range={this.props.range}
                    domainAxisTitle={this.props.domainAxisTitle}
                    rangeAxisTitle={this.props.rangeAxisTitle}/>
-      );
+    );
   }
 }
 

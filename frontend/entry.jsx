@@ -11,6 +11,7 @@ import Resize from './components/resize/chart';
 import FinalGroupedColumn from './components/final_grouped_column/chart';
 import FinalGroupedBar from './components/final_grouped_bar/chart';
 import FinalLineChart from './components/final_line_chart/chart';
+import FinalScatterPlot from './components/final_scatter_plot/chart';
 
 // Grouped Column Data
 let x0Data = ["A", "B", "C", "D", "E"],
@@ -26,14 +27,11 @@ let x0Data = ["A", "B", "C", "D", "E"],
 // let x0Data = ["2000", "2010", "2015", "2020", "2025"],
 //     x1Data = ["one"],
 //     yData = [[3,5,7,6,4]];
-document.addEventListener("DOMContentLoaded", function() {
-  ReactDOM.render(<LineChart/>, document.getElementById('root'));
-});
 
 document.addEventListener("DOMContentLoaded", function() {
-  ReactDOM.render(<FinalLineChart domain={x0Data}
-                                      subDomain={x1Data}
-                                      range={yData}
-                                      domainAxisTitle={"letters"}
-                                      rangeAxisTitle={"frequency"}/>, document.getElementById('root'));
+  ReactDOM.render(<FinalScatterPlot domain={x0Data}
+                                    subDomain={x1Data}
+                                    range={yData}
+                                    domainAxisTitle={"letters"}
+                                    rangeAxisTitle={"frequency"}/>, document.getElementById('root'));
 });
