@@ -2,14 +2,23 @@
   "name": "react_d3",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S-Cardenas/react_d3.git"
+  },
+  "keywords": [
+    "react",
+    "d3",
+    "charts",
+    "responsive"
+  ],
+  "author": "Stefan Cardenas",
+  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",

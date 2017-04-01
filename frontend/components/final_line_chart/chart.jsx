@@ -5,7 +5,7 @@ import React from 'react';
 import LineChart from './line_chart';
 
 // Define Component
-class Chart extends React.Component {
+export default class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.updateSize = this.updateSize.bind(this);
@@ -34,4 +34,4 @@ class Chart extends React.Component {
   }
 }
 
-export default Chart;
+// export default Chart;

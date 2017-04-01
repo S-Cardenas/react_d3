@@ -2,9 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Store and Root Component
-import configureStore from './store/store';
-
 // Import Components
 import FinalGroupedColumn from './components/final_grouped_column/chart';
 import FinalGroupedBar from './components/final_grouped_bar/chart';
