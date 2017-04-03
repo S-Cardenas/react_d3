@@ -1,11 +1,16 @@
 const path = require("path");
+var libraryName = "library";
+var outPutFile = libraryName + ".js";
 
 module.exports = {
   context: __dirname,
-  entry: "./frontend/entry.jsx",
+  entry: "./src/index.js",
   output: {
-    path: path.join(__dirname),
-    filename: "bundle.js"
+    path: path.join(__dirname) + "/dist",
+    filename: outPutFile,
+    library: libraryName,
+    libraryTarget: "umd",
+    umdNamedDefine: true
   },
   module: {
     loaders: [
