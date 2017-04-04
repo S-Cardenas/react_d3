@@ -167,7 +167,8 @@ export default (props) => {
                   style={style}
                   parameters={parameters}
                   minmiumYValue={minmiumYValue}/>
-
+          <XYAxis scales={scales}
+                  style={style}/>
           <Legend scales = {scales}
                   style={style}
                   parameters={parameters}/>

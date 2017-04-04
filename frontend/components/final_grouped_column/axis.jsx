@@ -2,7 +2,6 @@ import React from 'react';
 var d3 = require('d3');
 
 class Axis extends React.Component {
-
   componentDidMount() {
     this.renderAxis();
   }
@@ -55,7 +54,6 @@ class Axis extends React.Component {
            ref="axis"
            transform={scale.translate}
            style={axisTickValueStyle}>
-
         </g>
         <text textAnchor={"middle"}
               x={x}
