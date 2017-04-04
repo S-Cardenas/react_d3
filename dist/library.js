@@ -21775,9 +21775,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'renderAxis',
 	    value: function renderAxis() {
 	      // var node  = this.refs.axis;
-	      var node = $("#axis");
+	      var node = $("#" + this.props.scale.orient);
 	
-	      var node2 = d3.select("#axis").node();
+	      var node2 = d3.select("#" + this.props.scale.orient).node();
 	      console.log("node", node);
 	      console.log("node2", node2);
 	
@@ -21820,7 +21820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          id: 'axis',
+	          id: this.props.scale.orient,
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
