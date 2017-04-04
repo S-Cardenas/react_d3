@@ -21756,13 +21756,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    _this.id = null;
 	    _this.genRandomInt = _this.genRandomInt.bind(_this);
+	    _this.getRandomLetter = _this.getRandomLetter.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(Axis, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      this.id = this.genRandomInt(0, 10000).toString();
+	      this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
 	    }
 	  }, {
 	    key: 'genRandomInt',
@@ -21770,6 +21771,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      min = Math.ceil(min);
 	      max = Math.floor(max);
 	      return Math.floor(Math.random() * (max - min)) + min;
+	    }
+	  }, {
+	    key: 'getRandomLetter',
+	    value: function getRandomLetter() {
+	      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+	      return alphabet[Math.floor(Math.random() * alphabet.length)];
 	    }
 	  }, {
 	    key: 'componentDidMount',

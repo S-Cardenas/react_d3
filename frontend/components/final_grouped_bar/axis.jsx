@@ -6,16 +6,22 @@ class Axis extends React.Component {
     super(props);
     this.id = null;
     this.genRandomInt = this.genRandomInt.bind(this);
+    this.getRandomLetter = this.getRandomLetter.bind(this);
   }
 
   componentWillMount() {
-    this.id = this.genRandomInt(0, 10000).toString();
+    this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
   }
 
   genRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  getRandomLetter() {
+    let alphabet = "abcdefghijklmnopqrstuvwxyz";
+    return alphabet[Math.floor(Math.random() * alphabet.length)];
   }
 
   componentDidMount() {
