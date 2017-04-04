@@ -2,10 +2,19 @@ import React from 'react';
 var d3 = require('d3');
 
 class Axis extends React.Component {
+  constructor(props) {
+    super(props);
+    this.id = null;
+  }
 
   componentWillMount() {
-    console.log("mounting axis");
-    console.log("$", $);
+    this.id = this.genRandomInt(0, 10000).toString();
+  }
+
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   componentDidMount() {
@@ -17,20 +26,13 @@ class Axis extends React.Component {
   }
 
   renderAxis() {
-    // var node  = this.refs.axis;
-    var node = $("#" + this.props.scale.orient);
-
-    var node2 = d3.select("#" + this.props.scale.orient).node();
-    console.log("node", node);
-    console.log("node2", node2);
-
+    var node = d3.select("#" + this.id).node();
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
     } else if(this.props.scale.orient === 'left') {
       var axis = d3.axisLeft(this.props.scale.scale);
     }
-
-    d3.select(node2).call(axis);
+    d3.select(node).call(axis);
   }
 
   render() {
@@ -59,7 +61,7 @@ class Axis extends React.Component {
     return (
       <g>
         <g className="axis"
-           id={this.props.scale.orient}
+           id={this.id}
            transform={scale.translate}
            style={axisTickValueStyle}>
         </g>
@@ -71,7 +73,6 @@ class Axis extends React.Component {
           {title}
         </text>
       </g>
-
     );
   }
 }

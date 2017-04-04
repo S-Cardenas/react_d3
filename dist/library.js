@@ -21749,17 +21749,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Axis = function (_React$Component) {
 	  _inherits(Axis, _React$Component);
 	
-	  function Axis() {
+	  function Axis(props) {
 	    _classCallCheck(this, Axis);
 	
-	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).call(this, props));
+	
+	    _this.id = null;
+	    return _this;
 	  }
 	
 	  _createClass(Axis, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      console.log("mounting axis");
-	      console.log("$", $);
+	      this.id = this.genRandomInt(0, 10000).toString();
+	    }
+	  }, {
+	    key: 'getRandomInt',
+	    value: function getRandomInt(min, max) {
+	      min = Math.ceil(min);
+	      max = Math.floor(max);
+	      return Math.floor(Math.random() * (max - min)) + min;
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -21774,20 +21783,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      // var node  = this.refs.axis;
-	      var node = $("#" + this.props.scale.orient);
-	
-	      var node2 = d3.select("#" + this.props.scale.orient).node();
-	      console.log("node", node);
-	      console.log("node2", node2);
-	
+	      var node = d3.select("#" + this.id).node();
 	      if (this.props.scale.orient === 'bottom') {
 	        var axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
 	        var axis = d3.axisLeft(this.props.scale.scale);
 	      }
-	
-	      d3.select(node2).call(axis);
+	      d3.select(node).call(axis);
 	    }
 	  }, {
 	    key: 'render',
@@ -21820,7 +21822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          id: this.props.scale.orient,
+	          id: this.id,
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
