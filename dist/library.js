@@ -21755,6 +21755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).call(this, props));
 	
 	    _this.id = null;
+	    _this.genRandomInt = _this.genRandomInt.bind(_this);
 	    return _this;
 	  }
 	
@@ -21764,8 +21765,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.id = this.genRandomInt(0, 10000).toString();
 	    }
 	  }, {
-	    key: 'getRandomInt',
-	    value: function getRandomInt(min, max) {
+	    key: 'genRandomInt',
+	    value: function genRandomInt(min, max) {
 	      min = Math.ceil(min);
 	      max = Math.floor(max);
 	      return Math.floor(Math.random() * (max - min)) + min;

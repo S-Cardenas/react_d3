@@ -5,6 +5,7 @@ class Axis extends React.Component {
   constructor(props) {
     super(props);
     this.id = null;
+    this.genRandomInt = this.genRandomInt.bind(this);
   }
 
   componentWillMount() {
