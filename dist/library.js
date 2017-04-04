@@ -4380,6 +4380,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        style: style,
 	        parameters: parameters,
 	        minmiumYValue: minmiumYValue }),
+	      _react2.default.createElement(_x_y_axis2.default, { scales: scales,
+	        style: style }),
 	      _react2.default.createElement(_legend2.default, { scales: scales,
 	        style: style,
 	        parameters: parameters })
@@ -21754,6 +21756,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  _createClass(Axis, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      console.log("mounting axis");
+	      console.log("$", $);
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.renderAxis();
@@ -21766,7 +21774,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis;
+	      // var node  = this.refs.axis;
+	      var node = $("#axis");
 	
 	      if (this.props.scale.orient === 'bottom') {
 	        var axis = d3.axisBottom(this.props.scale.scale);
@@ -21807,7 +21816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          ref: 'axis',
+	          id: 'axis',
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
