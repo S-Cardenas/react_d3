@@ -3,6 +3,11 @@ var d3 = require('d3');
 
 class Axis extends React.Component {
 
+  componentWillMount() {
+    console.log("mounting axis");
+    console.log("$", $);
+  }
+
   componentDidMount() {
     this.renderAxis();
   }
