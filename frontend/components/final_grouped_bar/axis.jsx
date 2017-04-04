@@ -20,13 +20,17 @@ class Axis extends React.Component {
     // var node  = this.refs.axis;
     var node = $("#axis");
 
+    var node2 = d3.select("#axis").node();
+    console.log("node", node);
+    console.log("node2", node2);
+
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
     } else if(this.props.scale.orient === 'left') {
       var axis = d3.axisLeft(this.props.scale.scale);
     }
 
-    d3.select(node).call(axis);
+    d3.select(node2).call(axis);
   }
 
   render() {
