@@ -17,7 +17,8 @@ class Axis extends React.Component {
   }
 
   renderAxis() {
-    var node  = this.refs.axis;
+    // var node  = this.refs.axis;
+    var node = $("#axis");
 
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
@@ -54,7 +55,7 @@ class Axis extends React.Component {
     return (
       <g>
         <g className="axis"
-           ref="axis"
+           id="axis"
            transform={scale.translate}
            style={axisTickValueStyle}>
         </g>
