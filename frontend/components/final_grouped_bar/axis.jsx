@@ -11,7 +11,7 @@ class Axis extends React.Component {
     this.id = this.genRandomInt(0, 10000).toString();
   }
 
-  getRandomInt(min, max) {
+  genRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
