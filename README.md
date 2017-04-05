@@ -4,7 +4,7 @@ Modular charts made with React.JS and the d3.js library. The charts are responsi
 Current Available charts are: Bar Chart, Line Chart, Column Chart and Scatter Plot.
 
 ## Basic Usage
-```
+``` jsx
 import React from 'react';
 var BarChart = require("react_d3").BarChart;
 
@@ -25,3 +25,4 @@ class Example extends React.Component {
   }
 }
 ```
+
