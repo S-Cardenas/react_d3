@@ -2,6 +2,27 @@ import React from 'react';
 var d3 = require('d3');
 
 class Axis extends React.Component {
+  constructor(props) {
+    super(props);
+    this.id = null;
+    this.genRandomInt = this.genRandomInt.bind(this);
+    this.getRandomLetter = this.getRandomLetter.bind(this);
+  }
+
+  componentWillMount() {
+    this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
+  }
+
+  genRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  getRandomLetter() {
+    let alphabet = "abcdefghijklmnopqrstuvwxyz";
+    return alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
 
   componentDidMount() {
     this.renderAxis();
@@ -12,15 +33,12 @@ class Axis extends React.Component {
   }
 
   renderAxis() {
-    var node  = this.refs.axis;
-
+    var node = d3.select("#" + this.id).node();
     if (this.props.scale.orient === 'bottom') {
       var axis = d3.axisBottom(this.props.scale.scale);
-    }
-    else if(this.props.scale.orient === 'left') {
+    } else if(this.props.scale.orient === 'left') {
       var axis = d3.axisLeft(this.props.scale.scale);
     }
-
     d3.select(node).call(axis);
   }
 
@@ -52,10 +70,9 @@ class Axis extends React.Component {
     return (
       <g>
         <g className="axis"
-           ref="axis"
+           id={this.id}
            transform={scale.translate}
            style={axisTickValueStyle}>
-
         </g>
         <text textAnchor={"middle"}
               x={x}

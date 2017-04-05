@@ -4540,13 +4540,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Axis = function (_React$Component) {
 	  _inherits(Axis, _React$Component);
 	
-	  function Axis() {
+	  function Axis(props) {
 	    _classCallCheck(this, Axis);
 	
-	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).call(this, props));
+	
+	    _this.id = null;
+	    _this.genRandomInt = _this.genRandomInt.bind(_this);
+	    _this.getRandomLetter = _this.getRandomLetter.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Axis, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
+	    }
+	  }, {
+	    key: 'genRandomInt',
+	    value: function genRandomInt(min, max) {
+	      min = Math.ceil(min);
+	      max = Math.floor(max);
+	      return Math.floor(Math.random() * (max - min)) + min;
+	    }
+	  }, {
+	    key: 'getRandomLetter',
+	    value: function getRandomLetter() {
+	      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+	      return alphabet[Math.floor(Math.random() * alphabet.length)];
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.renderAxis();
@@ -4559,14 +4582,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis;
-	
+	      var node = d3.select("#" + this.id).node();
 	      if (this.props.scale.orient === 'bottom') {
 	        var axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
 	        var axis = d3.axisLeft(this.props.scale.scale);
 	      }
-	
 	      d3.select(node).call(axis);
 	    }
 	  }, {
@@ -4600,7 +4621,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          ref: 'axis',
+	          id: this.id,
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
@@ -22355,13 +22376,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Axis = function (_React$Component) {
 	  _inherits(Axis, _React$Component);
 	
-	  function Axis() {
+	  function Axis(props) {
 	    _classCallCheck(this, Axis);
 	
-	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).call(this, props));
+	
+	    _this.id = null;
+	    _this.genRandomInt = _this.genRandomInt.bind(_this);
+	    _this.getRandomLetter = _this.getRandomLetter.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Axis, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
+	    }
+	  }, {
+	    key: 'genRandomInt',
+	    value: function genRandomInt(min, max) {
+	      min = Math.ceil(min);
+	      max = Math.floor(max);
+	      return Math.floor(Math.random() * (max - min)) + min;
+	    }
+	  }, {
+	    key: 'getRandomLetter',
+	    value: function getRandomLetter() {
+	      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+	      return alphabet[Math.floor(Math.random() * alphabet.length)];
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.renderAxis();
@@ -22374,14 +22418,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis;
-	
+	      var node = d3.select("#" + this.id).node();
 	      if (this.props.scale.orient === 'bottom') {
 	        var axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
 	        var axis = d3.axisLeft(this.props.scale.scale);
 	      }
-	
 	      d3.select(node).call(axis);
 	    }
 	  }, {
@@ -22415,7 +22457,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          ref: 'axis',
+	          id: this.id,
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
@@ -22937,13 +22979,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Axis = function (_React$Component) {
 	  _inherits(Axis, _React$Component);
 	
-	  function Axis() {
+	  function Axis(props) {
 	    _classCallCheck(this, Axis);
 	
-	    return _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Axis.__proto__ || Object.getPrototypeOf(Axis)).call(this, props));
+	
+	    _this.id = null;
+	    _this.genRandomInt = _this.genRandomInt.bind(_this);
+	    _this.getRandomLetter = _this.getRandomLetter.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Axis, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.id = this.getRandomLetter() + this.genRandomInt(0, 10000).toString();
+	    }
+	  }, {
+	    key: 'genRandomInt',
+	    value: function genRandomInt(min, max) {
+	      min = Math.ceil(min);
+	      max = Math.floor(max);
+	      return Math.floor(Math.random() * (max - min)) + min;
+	    }
+	  }, {
+	    key: 'getRandomLetter',
+	    value: function getRandomLetter() {
+	      var alphabet = "abcdefghijklmnopqrstuvwxyz";
+	      return alphabet[Math.floor(Math.random() * alphabet.length)];
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.renderAxis();
@@ -22956,15 +23021,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'renderAxis',
 	    value: function renderAxis() {
-	      var node = this.refs.axis,
-	          axis;
-	
+	      var node = d3.select("#" + this.id).node();
 	      if (this.props.scale.orient === 'bottom') {
-	        axis = d3.axisBottom(this.props.scale.scale);
+	        var axis = d3.axisBottom(this.props.scale.scale);
 	      } else if (this.props.scale.orient === 'left') {
-	        axis = d3.axisLeft(this.props.scale.scale);
+	        var axis = d3.axisLeft(this.props.scale.scale);
 	      }
-	
 	      d3.select(node).call(axis);
 	    }
 	  }, {
@@ -22998,7 +23060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'g',
 	        null,
 	        _react2.default.createElement('g', { className: 'axis',
-	          ref: 'axis',
+	          id: this.id,
 	          transform: scale.translate,
 	          style: axisTickValueStyle }),
 	        _react2.default.createElement(
