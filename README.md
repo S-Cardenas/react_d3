@@ -26,3 +26,5 @@ class Example extends React.Component {
 }
 ```
 
+## Responsive Action
+![](https://media.giphy.com/media/WTqdgUy3IihH2/giphy.gif)
