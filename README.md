@@ -7,6 +7,9 @@ Current Available charts are: Bar Chart, Line Chart, Column Chart and Scatter Pl
 ``` jsx
 import React from 'react';
 var BarChart = require("react_d3").BarChart;
+var LineChart = require("react_d3").LineChart;
+var ScatterPlot = require("react_d3").ScatterPlot;
+var ColumnChart = require("react_d3").ColumnChart;
 
 // Sample Data
 let x0Data = ["A", "B", "C", "D", "E"],
