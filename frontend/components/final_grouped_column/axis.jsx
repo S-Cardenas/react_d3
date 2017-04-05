@@ -2,7 +2,7 @@ import React from 'react';
 var d3 = require('d3');
 
 class Axis extends React.Component {
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.id = null;
     this.genRandomInt = this.genRandomInt.bind(this);
