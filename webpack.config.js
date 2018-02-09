@@ -25,6 +25,9 @@ module.exports = {
       { test: /\.json$/, loader: 'json' },
     ]
   },
+  externals:[{
+    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+  }],
   devtool: 'source-maps',
   resolve: {
     extensions: ["", ".js", ".jsx" ]
